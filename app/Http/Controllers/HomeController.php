@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class HomeController extends Controller
+{
+    public function __invoke()
+    {
+        return "Hello, I'm AriC. Welcome to my first app";
+    }
+}
