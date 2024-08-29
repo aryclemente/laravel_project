@@ -8,6 +8,6 @@ class HomeController extends Controller
 {
     public function __invoke()
     {
-        return "Hello, I'm AriC. Welcome to my first app";
+        return "Hello, I'm AriC.Modulo Contrataciones";
     }
 }
