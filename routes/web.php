@@ -7,8 +7,10 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\HomeController;
 
-//Ruta sencilla | HomePage
-Route::get('/', HomeController::class);
+
+/*Ruta sencilla | HomePage*/
+
+Route::get('/', HomeController::class)->name('index');
 
 //Ruta con Controlador | Muestra todos los contratos
 Route::get('/contracts', [ContractsController::class, 'ShowAllContracts']);

@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 class RequestsController extends Controller
 {
     //Asignar control de la ruta al controlador | Mostrar Solicitudes
+    public function index()
+    {
+        return view('modules/Request/index');
+    }
+
     public function ShowAllRequests()
     {
         return "Hello, Welcome to Contract Systems.
