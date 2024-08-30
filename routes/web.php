@@ -6,11 +6,15 @@ use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 
 
-/*Ruta sencilla | HomePage*/
 
-Route::get('/', HomeController::class)->name('index');
+/*Ruta sencilla | Dashboard*/
+
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+
+//Route::get('/', HomeController::class)->name('index');
 
 //Ruta con Controlador | Muestra todos los contratos
 Route::get('/contracts', [ContractsController::class, 'ShowAllContracts']);
@@ -28,7 +32,7 @@ Route::get('/contracts/{contract?}', [ContractsController::class, 'ShowContract'
 Route::get('/requests', [RequestsController::class, 'ShowAllRequests']);
 
 //Ruta con Controlador | Crea una nueva Solicitud
-Route::get('/requests/CreateRequest', [RequestsController::class, 'CreateRequest']);
+//Route::get('/solicitud', [ContratoController::class, 'create'])->name('solicitud.create');
 
 //Modifica una solicitud seleccionado
 Route::get('/requests/UpdateRequest/{request?}', [RequestsController::class, 'UpdateRequest']);
