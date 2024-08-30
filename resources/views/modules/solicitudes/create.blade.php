@@ -14,9 +14,9 @@
                     <h5 class="card-title">Ingresa los datos de la solicitud</h5>
                     <p class="card-text">Recuerda revisar </p>
 
-                    <form action="{{ route('solicitudes.create') }}" method="POST" class="row g-3 needs-validation"
-                        novalidate>
+                    <form action="{{ route('solicitudes.store') }}" method="POST" class="row g-3 needs-validation" novalidate>
                         @csrf
+                        @method('POST')
                         <div class="col-md-3 position-relative">
                             <label for="validationTooltip04" class="form-label">Tipo de Solicitud</label>
                             <select class="form-select" id="validationTooltip04" required>

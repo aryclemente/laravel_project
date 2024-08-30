@@ -6,14 +6,17 @@ use App\Models\SolicitudesContrato;
 use App\Models\Trabajadores;
 use App\Models\Empresa;
 use App\Models\Servicio;
+use App\Models\TipoSolicitud;
 use Illuminate\Http\Request;
+
 
 class SolicitudesContratoController extends Controller
 {
     public function index()
     {
+        $tiposolicitud = TipoSolicitud::all();
         $solicitudes = SolicitudesContrato::all();
-        return view('modules/solicitudes/index', compact('solicitudes'));
+        return view('modules/solicitudes/index', compact('solicitudes', 'tiposolicitud'));
     }
 
     public function create()
