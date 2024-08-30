@@ -9,20 +9,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Trabajadore
- * 
+ * Class Trabajadores
+ *
  * @property int $idTrabajador
  * @property int $Codigo_Trabajador
  * @property int $Status_Trabajador
  * @property int $Personas_idPersonas
  * @property int $Cargos_idCargos
- * 
+ *
  * @property Cargo $cargo
  * @property Persona $persona
  *
  * @package App\Models
  */
-class Trabajadore extends Model
+class Trabajadores extends Model
 {
 	protected $table = 'trabajadores';
 	public $timestamps = false;
