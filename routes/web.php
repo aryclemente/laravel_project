@@ -16,15 +16,15 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 /*/Muestra todas las solicitudes*/
 Route::get('/solicitudes', [SolicitudesContratoController::class, 'index'])->name('solicitudes.index');
 
-/*/Crea una solicitud*/
+/*Crea una solicitud*/
 
 Route::get('/solicitudes/create', [SolicitudesContratoController::class, 'create'])->name('solicitudes.create');
 
-/*/Crea una solicitud*/
+/*Envia la solicitud a BBDD*/
 Route::post('/solicitudes', [SolicitudesContratoController::class, 'store'])->name('solicitudes.store');
 
-/*/Crea una solicitud*/
-Route::get('/solicitudes/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
+/*Muestra el detalle de una solicitud*/
+Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
 
 /*/Obtener solicitud por id*/
 Route::get('/solicitudes/{id}/edit', [SolicitudesContratoController::class, 'edit'])->name('solicitudes.edit');

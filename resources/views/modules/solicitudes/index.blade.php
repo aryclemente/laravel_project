@@ -33,8 +33,16 @@
                 <tbody class="table-group-divider">
                     @foreach ($solicitudes as $solicitud)
                         <tr>
-                            <td class="table-info text-center">{{ $solicitud->idSolicitud }}</td>
-                            <td class="">{{ $solicitud->Fecha_solicitud }}</td>
+                            <td class="table-info text-center">
+                                <a href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}">
+
+                                    {{ $solicitud->idSolicitud }}
+                                </a>
+                            </td>
+
+                            <td class="">
+                                {{ $solicitud->Fecha_solicitud->format('d/m/Y') }}
+                            </td>
                             <td>{{ $solicitud->Tipo_Solicitud->Tipo_Solicitud }}</td>
                             <td class="text-center ">
 
@@ -42,6 +50,7 @@
 
                                 </form>
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>

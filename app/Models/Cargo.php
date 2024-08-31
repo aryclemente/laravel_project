@@ -11,15 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Cargo
- * 
+ *
  * @property int $idCargos
  * @property string $Nombre_Cargo
  * @property string $Descripción_Cargo
  * @property int $Turnos_idTurnos1
- * 
+ *
  * @property Turno $turno
  * @property Collection|Contrato[] $contratos
- * @property Collection|Trabajadore[] $trabajadores
+ * @property Collection|Trabajadores[] $trabajadores
  *
  * @package App\Models
  */
@@ -49,6 +49,6 @@ class Cargo extends Model
 
 	public function trabajadores()
 	{
-		return $this->hasMany(Trabajadore::class, 'Cargos_idCargos');
+		return $this->hasMany(Trabajadores::class, 'Cargos_idCargos');
 	}
 }

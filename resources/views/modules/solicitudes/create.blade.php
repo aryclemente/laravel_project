@@ -21,10 +21,13 @@
                             <label for="validationTooltip04" class="form-label">Tipo de Solicitud</label>
                             <select class="form-select" id="validationTooltip04" required>
                                 <option selected disabled value="">Elegir</option>
-                                <option>Personal Fijo</option>
-                                <option>A Destajo</option>
-                                <option>Empresas</option>
+                                @foreach ($tiposolicitud as $tipo)
+                                    <option value="{{ $tipo->idTipo_Solicitud }}">{{ $tipo->Tipo_Solicitud }}</option>
+                                @endforeach
                             </select>
+                            <div class="valid-tooltip">
+                                Excelente!
+                            </div>
                             <div class="invalid-tooltip">
                                 Por favor selecciona un tipo de solicitud.
                             </div>
@@ -34,72 +37,36 @@
                             <select class="form-select" id="servicio_id" name="servicio_id" required>
                                 <option selected disabled value="">Elegir</option>
                                 @foreach ($servicios as $servicio)
-                                    <option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+                                    <option value="{{ $servicio->idServicio }}">{{ $servicio->Nombre_Servicio }}</option>
                                 @endforeach
                             </select>
                             <div class="valid-tooltip">
                                 Excelente!
                             </div>
                             <div class="invalid-tooltip">
-                                Por favor selecciona un tipo de solicitud.
-                            </div>
-                        </div>
-                        <div class="col-md-4 position-relative">
-                            <label for="validationTooltip01" class="form-label">Personas</label>
-                            <select class="form-select" id="trabajador_id" name="trabajador_id" required>
-                                <option selected disabled value="">Elegir</option>
-                                @foreach ($trabajadores as $trabajador)
-                                    <option value="{{ $trabajador->id }}">{{ $trabajador->nombre }}
-                                        {{ $trabajador->apellido }}</option>
-                                @endforeach
-                            </select>
-                            <div class="valid-tooltip">
-                                Excelente!
-                            </div>
-                            <div class="invalid-tooltip">
-                                Por favor selecciona un tipo de solicitud.
-                            </div>
-                        </div>
-                        <div class="col-md-4 position-relative">
-                            <label for="validationTooltip02" class="form-label">Fecha_Inicio</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" required>
-                            </div>
-                            <div class="valid-tooltip">
-                                Looks good!
-                            </div>
-                        </div>
-                        <div class="col-md-4 position-relative">
-                            <label for="validationTooltipUsername" class="form-label">Fecha_final</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                <input type="date" id="fecha_final" name="fecha_final" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6 position-relative">
-                            <label for="validationTooltip03" class="form-label">Remuneracion</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">$</span>
-                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                                <span class="input-group-text">.00</span>
-                            </div>
-                            <div class="invalid-tooltip">
-                                Please provide a valid city.
+                                Por favor selecciona un servicio.
                             </div>
                         </div>
 
-                        <div class="col-md-3 position-relative">
-                            <label for="validationTooltip05" class="form-label">Empresa</label>
-                            <select class="form-select" id="empresa_id" name="empresa_id" required>
-                                @foreach ($empresas as $empresa)
-                                    <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+
+                        <div class="col-md-4 position-relative">
+                            <label for="validationTooltip01" class="form-label">Personas</label>
+                            <select class="form-select" id="personas_id" name="personas_id" required>
+                                <option selected disabled value="">Elegir</option>
+                                @foreach ($personas as $persona)
+                                    <option value="{{ $persona->idPersonas }}">{{ $persona->Nombres }}
+                                        {{ $persona->Apellidos }}</option>
                                 @endforeach
                             </select>
+                            <div class="valid-tooltip">
+                                Excelente!
+                            </div>
                             <div class="invalid-tooltip">
-                                Please provide a valid zip.
+                                Por favor selecciona un tipo de solicitud.
                             </div>
                         </div>
+
+
                         <div class="col-12">
                             <button class="btn btn-primary" type="submit">Registrar Solicitud</button>
                         </div>

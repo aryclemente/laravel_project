@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Persona
- * 
+ *
  * @property int $idPersonas
  * @property string $Nombres
  * @property string $Apellidos
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $Correo_Electrónico
  * @property string $Teléfono
  * @property int $Generos_idGénero
- * 
+ *
  * @property Genero $genero
  * @property Collection|Servicio[] $servicios
  * @property Collection|Trabajadore[] $trabajadores
@@ -56,11 +56,11 @@ class Persona extends Model
 	public function servicios()
 	{
 		return $this->belongsToMany(Servicio::class, 'personas_has_servicios', 'Personas_idPersonas', 'Servicios_idServicio')
-					->withPivot('id_Personas_has_Servicios', 'Costo_Servicio');
+			->withPivot('id_Personas_has_Servicios', 'Costo_Servicio');
 	}
 
 	public function trabajadores()
 	{
-		return $this->hasMany(Trabajadore::class, 'Personas_idPersonas');
+		return $this->hasMany(Trabajadores::class, 'Personas_idPersonas');
 	}
 }
