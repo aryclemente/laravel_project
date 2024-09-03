@@ -34,10 +34,10 @@
                     @foreach ($solicitudes as $solicitud)
                         <tr>
                             <td class="table-info text-center">
-                                <a href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}">
 
-                                    {{ $solicitud->idSolicitud }}
-                                </a>
+
+                                {{ $solicitud->idSolicitud }}
+
                             </td>
 
                             <td class="">
@@ -45,7 +45,12 @@
                             </td>
                             <td>{{ $solicitud->Tipo_Solicitud->Tipo_Solicitud }}</td>
                             <td class="text-center ">
-
+                                <a class="btn btn-outline-success"
+                                    href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}">
+                                    Generar Contrato</a>
+                                <a class="btn btn-outline-info"
+                                    href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}">
+                                    Mostrar</a>
                                 <button type="submit" class="btn btn-outline-danger">Eliminar</button>
 
                                 </form>

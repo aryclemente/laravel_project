@@ -34,7 +34,8 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                         aria-expanded="false">Personal a Destajo</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Solicitudes</a></li>
+                        <li><a class="dropdown-item" href="{{ route('solicitudes.createdestajo') }}">Solicitudes</a>
+                        </li>
                         <li><a class="dropdown-item" href="#">Servicios</a></li>
                         <li><a class="dropdown-item" href="#">Personal</a></li>
                         <li><a class="dropdown-item" href="#">Contratos</a></li>

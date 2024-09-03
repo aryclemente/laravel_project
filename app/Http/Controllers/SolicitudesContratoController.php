@@ -9,6 +9,7 @@ use App\Models\Empresa;
 use App\Models\Persona;
 use App\Models\Servicio;
 use App\Models\TipoSolicitud;
+use App\Models\PersonasHasServicio;
 use App\Models\Turno;
 use Illuminate\Http\Request;
 
@@ -25,35 +26,45 @@ class SolicitudesContratoController extends Controller
         return view('modules/solicitudes/index', compact('solicitudes', 'tiposolicitud'));
     }
 
-    public function create()
+    public function createdestajo()
     {
-        $tiposolicitud = TipoSolicitud::all();
+
         $solicitudes = SolicitudesContrato::all();
-        $empresas = Empresa::all();
         $personas = Persona::all();
-        $cargos = Cargo::all();
-        $turnos = Turno::all();
         $servicios = Servicio::all();
-        return view('modules/solicitudes/create', compact('solicitudes', 'tiposolicitud', 'personas',  'empresas', 'servicios', 'cargos', 'turnos'));
+
+        return view('modules/solicitudes/createdestajo', compact('solicitudes', 'personas',  'servicios'));
     }
 
-    public function store(Request $request)
+    public function storedestajo(Request $request)
     {
+
+        $solicitudes = new SolicitudesContrato();
+        $personas_servicios = new PersonasHasServicio();
+
         $request->validate([
-            'idTipo_Solicitud' => 'required|boolean',
-            'servicios_idServicio' => 'required|integer|exists:servicios,idServicio',
-            'personas_idPersonas' => 'required|integer|exists:personas,idPersonas'
+            'personas_id' => 'required',
+            'servicio_id' => 'required'
         ]);
 
-        SolicitudesContrato::create($request->all());
+        $personas_servicios->Servicios_idServicio = $request->servicio_id;
+        $personas_servicios->Personas_idPersonas = $request->personas_id;
+        $personas_servicios->Costo_Servicio = $request->costo_servicio;
+        $personas_servicios->save();
+
+        $solicitudes->Fecha_solicitud = now();
+        $solicitudes->Status_solicitud = true;
+        $solicitudes->Tipo_Solicitud_idTipo_Solicitud = 2;
+
+        $personas_servicios->solicitudes_contratos()->save($solicitudes);
+
+
         return redirect()->route('solicitudes.index');
     }
 
-    public function show(string $idSolicitud)
-    {
-        $solicitud = SolicitudesContrato::find($idSolicitud);
-        return view('modules/solicitudes/show', compact('solicitud'));
-    }
+
+
+
 
     public function edit(SolicitudesContrato $solicitud)
     {
