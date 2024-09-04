@@ -21,7 +21,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                        aria-expanded="false">Personal Fijo</a>
+                        aria-expanded="false">Solicitudes</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('solicitudes.index') }}">Solicitudes</a>
                         </li>
@@ -32,25 +32,16 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                        aria-expanded="false">Personal a Destajo</a>
+                        aria-expanded="false">Contratos</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ route('solicitudes.createdestajo') }}">Solicitudes</a>
+                        <li><a class="dropdown-item" href="{{ route('solicitudes.index') }}">Solicitudes</a>
                         </li>
                         <li><a class="dropdown-item" href="#">Servicios</a></li>
                         <li><a class="dropdown-item" href="#">Personal</a></li>
                         <li><a class="dropdown-item" href="#">Contratos</a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                        aria-expanded="false">Empresas</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Solicitudes</a></li>
-                        <li><a class="dropdown-item" href="#">Servicios</a></li>
-                        <li><a class="dropdown-item" href="#">Empresas</a></li>
-                        <li><a class="dropdown-item" href="#">Contratos</a></li>
-                    </ul>
-                </li>
+
 
             </ul>
         </div>
@@ -59,6 +50,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+    @stack('scripts')
 </body>
 
 </html>

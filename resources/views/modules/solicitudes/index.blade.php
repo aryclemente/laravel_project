@@ -43,7 +43,9 @@
                             <td class="">
                                 {{ $solicitud->Fecha_solicitud->format('d/m/Y') }}
                             </td>
-                            <td>{{ $solicitud->Tipo_Solicitud->Tipo_Solicitud }}</td>
+                            <td>
+                                {{ $solicitud->tipo_solicitud ? $solicitud->tipo_solicitud->Tipo_Solicitud : 'Sin tipo de solicitud' }}
+                            </td>
                             <td class="text-center ">
                                 <a class="btn btn-outline-success"
                                     href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}">

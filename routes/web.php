@@ -25,7 +25,7 @@ Route::get('/solicitudes/create', [SolicitudesContratoController::class, 'create
 Route::get('/solicitudes/createdestajo', [SolicitudesContratoController::class, 'createdestajo'])->name('solicitudes.createdestajo');
 
 /*Envia la solicitud a BBDD*/
-Route::post('/solicitudes', [SolicitudesContratoController::class, 'storedestajo'])->name('solicitudes.storedestajo');
+Route::post('/solicitudes', [SolicitudesContratoController::class, 'store'])->name('solicitudes.store');
 
 /*Muestra el detalle de una solicitud*/
 Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
