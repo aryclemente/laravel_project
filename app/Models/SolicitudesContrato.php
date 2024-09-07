@@ -12,14 +12,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SolicitudesContrato
- * 
+ *
  * @property int $idSolicitud
  * @property Carbon $Fecha_solicitud
  * @property bool $Status_solicitud
  * @property int|null $Tipo_Solicitud_idTipo_Solicitud
  * @property int|null $id_Personas_has_Servicios_
  * @property int|null $Empresas_has_Servicios_idEmpresas_has_Servicioscol
- * 
+ *
  * @property EmpresasHasServicio|null $empresas_has_servicio
  * @property PersonasHasServicio|null $personas_has_servicio
  * @property TipoSolicitud|null $tipo_solicitud
@@ -66,6 +66,6 @@ class SolicitudesContrato extends Model
 
 	public function contratos()
 	{
-		return $this->hasMany(Contrato::class, 'Solicitudes_contratos_idSolicitud');
+		return $this->hasOne(Contrato::class, 'Solicitudes_contratos_idSolicitud');
 	}
 }

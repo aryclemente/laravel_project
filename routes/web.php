@@ -9,32 +9,26 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SolicitudesContratoController;
 
-/*Ruta sencilla | Dashboard*/
+/* Dashboard*/
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
+
 /*/Muestra todas las solicitudes*/
 Route::get('/solicitudes', [SolicitudesContratoController::class, 'index'])->name('solicitudes.index');
-
 /*Crea una solicitud*/
-
 Route::get('/solicitudes/create', [SolicitudesContratoController::class, 'create'])->name('solicitudes.create');
-
-/*Crea una solicitud a Destajo*/
-
-Route::get('/solicitudes/createdestajo', [SolicitudesContratoController::class, 'createdestajo'])->name('solicitudes.createdestajo');
-
 /*Envia la solicitud a BBDD*/
 Route::post('/solicitudes', [SolicitudesContratoController::class, 'store'])->name('solicitudes.store');
+/*/Obtener solicitud por id*/
+Route::get('/solicitudes/edit/{id}', [SolicitudesContratoController::class, 'edit'])->name('solicitudes.edit');
+/*/Modificar una solicitud*/
+Route::put('/solicitudes/update/{id}', [SolicitudesContratoController::class, 'update'])->name('solicitudes.update');
 
 /*Muestra el detalle de una solicitud*/
 Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
 
-/*/Obtener solicitud por id*/
-Route::get('/solicitudes/{id}/edit', [SolicitudesContratoController::class, 'edit'])->name('solicitudes.edit');
 
-/*/Modificar una solicitud*/
-Route::put('/solicitudes/{id}', [SolicitudesContratoController::class, 'update'])->name('solicitudes.update');
 
 /*/Finalizar solicitud*/
 Route::post('/solicitudes/{id}/finalizar', [SolicitudesContratoController::class, 'finalizar'])->name('solicitudes.finalizar');

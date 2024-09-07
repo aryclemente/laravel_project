@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\Model;
 class Persona extends Model
 {
 	protected $table = 'personas';
+	protected $primaryKey = 'idPersonas';
+
 	public $timestamps = false;
 
 	protected $casts = [

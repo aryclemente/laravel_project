@@ -91,64 +91,57 @@ class SolicitudesContratoController extends Controller
         }
     }
 
-    public function createdestajo()
-    {
 
+
+    public function edit(string $id)
+    {
         $solicitudes = SolicitudesContrato::all();
         $personas = Persona::all();
         $servicios = Servicio::all();
         $tiposolicitud = TipoSolicitud::all();
-        return view('modules/solicitudes/createx2', compact('solicitudes', 'personas',  'servicios', 'tiposolicitud'));
-    }
-
-    public function storedestajo(Request $request)
-    {
-
-        $solicitudes = new SolicitudesContrato();
-        $personas_servicios = new PersonasHasServicio();
-
-        $request->validate([
-            'personas_id' => 'required',
-            'servicio_id' => 'required'
-        ]);
-
-        $personas_servicios->Servicios_idServicio = $request->servicio_id;
-        $personas_servicios->Personas_idPersonas = $request->personas_id;
-        $personas_servicios->Costo_Servicio = $request->costo_servicio;
-        $personas_servicios->save();
-
-        $solicitudes->Fecha_solicitud = now();
-        $solicitudes->Status_solicitud = true;
-        $solicitudes->Tipo_Solicitud_idTipo_Solicitud = 2;
-
-        $personas_servicios->solicitudes_contratos()->save($solicitudes);
-
-
-        return redirect()->route('solicitudes.index');
-    }
-
-
-
-
-
-    public function edit(SolicitudesContrato $solicitud)
-    {
-        $trabajadores = Trabajadores::all();
+        $turnos = Turno::all();
+        $cargos = Cargo::all();
         $empresas = Empresa::all();
-        $servicios = Servicio::all();
-        return view('modules/solicitudes/edit', compact('solicitud', 'trabajadores', 'empresas', 'servicios'));
+
+        $solicitud = SolicitudesContrato::FindOrFail($id);
+        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->with('solicitudes_contratos')->get();
+        foreach ($personaservicio as $ps) {
+            $persona_ps = $ps->persona;
+            $servicio_ps = $ps->servicio;
+        }
+
+
+
+        return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas',  'servicios', 'turnos', 'cargos', 'empresas', 'ps', 'persona_ps', 'servicio_ps'));
     }
 
-    public function update(Request $request, SolicitudesContrato $solicitud)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'idTipo_Solicitud' => 'required|boolean',
-            'servicios_idServicio' => 'required|integer|exists:servicios,idServicio',
-            'personas_idPersonas' => 'required|integer|exists:personas,idPersonas'
-        ]);
+        $solicitud = SolicitudesContrato::FindOrFail($id);
+
+        $id_ts = $request->tipo_solicitud;
+
+        // switch ($id_ts) {
+        //     case 1:
+        //         return redirect()->route('solicitudes.index');
+
+        //     case 2:
+        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->with('solicitudes_contratos')->get();
+
+
+        foreach ($personaservicio as $ps) {
+            $ps->Servicios_idServicio = $request->servicio_id;
+            $ps->Personas_idPersonas = $request->personas_id;
+            $ps->Costo_Servicio = $request->costo_servicio;
+            $ps->save();
+            $ps->solicitudes_contratos()->save($solicitud);
+        }
 
         $solicitud->update($request->all());
         return redirect()->route('solicitudes.index');
+        // case 3:
+        return redirect()->route('solicitudes.index');
+        // }
     }
 
     public function destroy(SolicitudesContrato $solicitud)

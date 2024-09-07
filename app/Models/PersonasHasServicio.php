@@ -11,12 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class PersonasHasServicio
- * 
+ *
  * @property int $id_Personas_has_Servicios
  * @property int $Servicios_idServicio
  * @property int $Personas_idPersonas
  * @property float|null $Costo_Servicio
- * 
+ *
  * @property Persona $persona
  * @property Servicio $servicio
  * @property Collection|SolicitudesContrato[] $solicitudes_contratos
@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
 class PersonasHasServicio extends Model
 {
 	protected $table = 'personas_has_servicios';
+	protected $primaryKey = 'id_Personas_has_Servicios';
 	public $timestamps = false;
 
 	protected $casts = [

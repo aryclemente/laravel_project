@@ -53,6 +53,9 @@
                                 <a class="btn btn-outline-info"
                                     href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}">
                                     Mostrar</a>
+                                <a class="btn btn-outline-warning"
+                                    href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}">
+                                    Modificar</a>
                                 <button type="submit" class="btn btn-outline-danger">Eliminar</button>
 
                                 </form>
