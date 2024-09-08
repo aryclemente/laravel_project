@@ -31,7 +31,7 @@ Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'sho
 
 
 /*/Finalizar solicitud*/
-Route::post('/solicitudes/{id}/finalizar', [SolicitudesContratoController::class, 'finalizar'])->name('solicitudes.finalizar');
+Route::post('/solicitudes/delete/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.delete');
 
 /*Ruta con Controlador | Muestra todos los contratos*/
 Route::get('/contracts', [ContractsController::class, 'ShowAllContracts']);

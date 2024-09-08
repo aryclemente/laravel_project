@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class SolicitudesContrato
@@ -29,10 +30,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SolicitudesContrato extends Model
 {
+
 	protected $table = 'solicitudes_contratos';
 	protected $primaryKey = 'idSolicitud';
 	public $timestamps = false;
-
+	use SoftDeletes;
 	protected $casts = [
 		'Fecha_solicitud' => 'datetime',
 		'Status_solicitud' => 'bool',

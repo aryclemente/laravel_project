@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('Tipo_Solicitud_idTipo_Solicitud')->nullable()->index('fk_solicitudes_contratos_tipo_solicitud1_idx');
             $table->integer('id_Personas_has_Servicios_')->nullable()->index('fk_solicitudes_contratos_personas_has_servicios1_idx');
             $table->integer('Empresas_has_Servicios_idEmpresas_has_Servicioscol')->nullable()->index('fk_solicitudes_contratos_empresas_has_servicios1_idx');
-
+            $table->timestamp('deleted_at')->nullable();
             $table->primary(['idSolicitud']);
         });
     }
