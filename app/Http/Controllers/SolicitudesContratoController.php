@@ -144,9 +144,10 @@ class SolicitudesContratoController extends Controller
         // }
     }
 
-    public function destroy(SolicitudesContrato $solicitud)
-    {
-        $solicitud->delete();
-        return redirect()->route('solicitudes.index');
-    }
+    public function destroy($id)
+{
+    $solicitud = SolicitudesContrato::findOrFail($id);
+    $solicitud->delete();
+    return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito.');
+}
 }
