@@ -111,58 +111,41 @@ class SolicitudesContratoController extends Controller
 
     // SolicitudesContratoController.php
     public function generateContract($id)
-{
-    $solicitud = SolicitudesContrato::with([
-        'personas_has_servicio', 
-        'empresas_has_servicio', 
-        'tipo_solicitud',
-        'contratos'
-    ])->findOrFail($id);
-    dd($solicitud);
+    {
+        // Obtener la solicitud por ID
+        $solicitud = SolicitudesContrato::findOrFail($id);
 
-    // Elige la vista basada en el tipo de solicitud
-    $view = 'modules.contratos.default_contract_template'; // Vista por defecto si no se encuentra una específica
+        // Validar el tipo de contrato y seleccionar la vista
+        switch ($solicitud->tipo_solicitud->tipo_contrato) {
+            case 'fijo':
+                $view = 'modules.contratos.fixed_contract_template';
+                break;
+            case 'servicios':
+                $view = 'modules.contratos.task_contract_template';
+                break;
+            case 'empresa':
+                $view = 'modules.contratos.company_contract_template';
+                break;
+            default:
+                abort(404, 'Tipo de contrato no válido.');
+        }
 
-    switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
-        case 1:
-            $view = 'modules.contratos.fixed_contract_template';
-            break;
-        case 2:
-            $view = 'modules.contratos.task_contract_template';
-            break;
-        case 3:
-            $view = 'modules.contratos.company_contract_template';
-            break;
+        // Generar el PDF
+        $pdf = PDF::loadView($view, ['solicitud' => $solicitud]);
+
+        // Retornar el PDF descargable
+        return $pdf->download('contrato_' . $solicitud->id . '.pdf');
     }
-
-    $pdf = \PDF::loadView($view, ['solicitud' => $solicitud]);
-
-    return $pdf->download('contrato_' . $id . '.pdf');
-}
 
     public function show($id)
-{
-    // Encuentra la solicitud por su ID o lanza una excepción si no se encuentra
-    $solicitud = SolicitudesContrato::findOrFail($id);
-
-    // Inicializar variables
-    $persona_ps = null;
-    $servicio_ps = null;
-
-    // Obtén información adicional si es necesario
-    $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->with('solicitudes_contratos')->get();
-
-    // Verificar si hay resultados y asignar variables
-    if ($personaservicio->isNotEmpty()) {
-        $ps = $personaservicio->first(); // Obtener el primer resultado
-        $persona_ps = $ps->persona;
-        $servicio_ps = $ps->servicio;
+    {
+        // Obtener la solicitud por ID
+        $solicitud = SolicitudesContrato::findOrFail($id);
+    
+        // Pasar la solicitud a la vista
+        return view('modules.solicitudes.show', compact('solicitud'));
     }
-
-    // Devuelve la vista con la solicitud y datos relacionados
-    return view('modules/solicitudes/show', compact('solicitud', 'persona_ps', 'servicio_ps'));
-}
-
+    
 public function edit(string $id)
 {
     // Obtener todos los datos necesarios para la vista
@@ -231,6 +214,8 @@ public function update(Request $request, string $id)
     $solicitud = SolicitudesContrato::findOrFail($id);
     $solicitud->delete();
     return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito.');
+}
+}
 }
 }
 
