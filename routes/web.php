@@ -5,9 +5,9 @@ use App\Http\Controllers\ContractsController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\SolicitudesContratoController;
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\SolicitudesContratoController;
 
 /* Dashboard*/
 
@@ -28,10 +28,15 @@ Route::put('/solicitudes/update/{id}', [SolicitudesContratoController::class, 'u
 /*Muestra el detalle de una solicitud*/
 Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
 
+Route::get('/solicitudes/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
+
+Route::get('/solicitudes/{id}/generar-contrato', [SolicitudesContratoController::class, 'generateContract'])->name('solicitudes.generateContract');
+
 
 
 /*/Finalizar solicitud*/
 Route::post('/solicitudes/{id}/finalizar', [SolicitudesContratoController::class, 'finalizar'])->name('solicitudes.finalizar');
+Route::delete('/solicitudes/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.destroy');
 
 /*Ruta con Controlador | Muestra todos los contratos*/
 Route::get('/contracts', [ContractsController::class, 'ShowAllContracts']);
@@ -75,3 +80,4 @@ Route::get('/staff/UpdateStaff/{staff?}', [StaffController::class, 'UpdateStaff'
 
 //Se visualiza el detalle de un personal
 Route::get('/staff/ShowStaff/{staff?}', [StaffController::class, 'ShowStaff']);
+
