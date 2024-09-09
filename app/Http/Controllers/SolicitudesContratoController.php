@@ -22,6 +22,7 @@ class SolicitudesContratoController extends Controller
     {
         $tiposolicitud = TipoSolicitud::all();
         $solicitudes = SolicitudesContrato::all();
+        // $solicitudes = SolicitudesContrato::where('Status_solicitud', true)->get();
         $cargos = Cargo::all();
         $servicios = Servicio::all();
         return view('modules/solicitudes/index', compact('solicitudes', 'tiposolicitud'));
@@ -144,15 +145,37 @@ class SolicitudesContratoController extends Controller
         // }
     }
 
-    public function destroy(string $id)
+    // public function destroy(string $id)
+    // {
+    //     $solicitud = SolicitudesContrato::withTrashed()->findOrFail($id);
+    //     if ($solicitud->trashed()) {
+    //         $solicitud->restore();
+    //         return redirect()->back()->with('success', 'Solicitud restaurada.');
+    //     } else {
+    //         $solicitud->delete();
+    //         return redirect()->back()->with('success', 'Solicitud eliminada.');
+    //     }
+    // }
+
+    public function create_contrato(string $id)
     {
-        $solicitud = SolicitudesContrato::withTrashed()->findOrFail($id);
-        if ($solicitud->trashed()) {
-            $solicitud->restore();
-            return redirect()->back()->with('success', 'Solicitud restaurada.');
-        } else {
-            $solicitud->delete();
-            return redirect()->back()->with('success', 'Solicitud eliminada.');
+        $solicitudes = SolicitudesContrato::all();
+        $personas = Persona::all();
+        $servicios = Servicio::all();
+        $tiposolicitud = TipoSolicitud::all();
+        $turnos = Turno::all();
+        $cargos = Cargo::all();
+        $empresas = Empresa::all();
+
+        $solicitud = SolicitudesContrato::FindOrFail($id);
+        $tipo = TipoSolicitud::where('idTipo_Solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud)->with('solicitudes_contratos')->get();
+        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->with('solicitudes_contratos')->get();
+
+        foreach ($personaservicio as $ps) {
+            $persona = PersonasHasServicio::where('idPersonas', $ps->Personas_idPersonas)->with('persona')->get();
+            dd($persona, $ps);
         }
+
+        return view('modules/contratos/create', compact('solicitud', 'tipo', 'personas',  'servicios', 'turnos', 'cargos', 'empresas'));
     }
 }

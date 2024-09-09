@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Contrato
- * 
+ *
  * @property int $idContratos
  * @property Carbon $Fecha_Inicio
  * @property Carbon $Fecha_Fin
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $Solicitudes_contratos_idSolicitud
  * @property int $Cargos_idCargos
  * @property int $Cargos_Turnos_idTurnos
- * 
+ *
  * @property Cargo $cargo
  * @property SolicitudesContrato $solicitudes_contrato
  *
@@ -32,6 +32,7 @@ class Contrato extends Model
 	public $timestamps = false;
 
 	protected $casts = [
+
 		'Fecha_Inicio' => 'datetime',
 		'Fecha_Fin' => 'datetime',
 		'Remuneración' => 'float',

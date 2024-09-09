@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class TipoSolicitud
- * 
+ *
  * @property int $idTipo_Solicitud
  * @property string|null $Tipo_Solicitud
- * 
+ *
  * @property Collection|SolicitudesContrato[] $solicitudes_contratos
  *
  * @package App\Models

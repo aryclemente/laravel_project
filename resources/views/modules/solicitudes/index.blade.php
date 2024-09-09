@@ -26,6 +26,8 @@
                         <th>ID</th>
                         <th>Fecha</th>
                         <th>Tipo_Solicitud</th>
+                        <th>Status</th>
+                        <th>Vencimiento</th>
                         <th>Acciones</th>
 
                     </tr>
@@ -40,15 +42,19 @@
 
                             </td>
 
+
                             <td class="">
                                 {{ $solicitud->Fecha_solicitud->format('d/m/Y') }}
                             </td>
                             <td>
                                 {{ $solicitud->tipo_solicitud ? $solicitud->tipo_solicitud->Tipo_Solicitud : 'Sin tipo de solicitud' }}
                             </td>
+                            <td>
+                                {{ $solicitud->Status_solicitud }}
+                            </td>
                             <td class="text-center ">
                                 <a class="btn btn-outline-success"
-                                    href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}">
+                                    href="{{ route('contratos.create', $solicitud->idSolicitud) }}">
                                     Generar Contrato</a>
                                 <a class="btn btn-outline-info"
                                     href="{{ route('solicitudes.show', $solicitud->idSolicitud) }}">
@@ -56,7 +62,10 @@
                                 <a class="btn btn-outline-warning"
                                     href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}">
                                     Modificar</a>
-                                <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                                <a class="btn btn-outline-danger"
+                                    href="{{ route('solicitudes.delete', $solicitud->idSolicitud) }}">
+                                    Eliminar</a>
+
 
                                 </form>
                             </td>

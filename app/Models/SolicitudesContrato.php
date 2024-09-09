@@ -34,7 +34,6 @@ class SolicitudesContrato extends Model
 	protected $table = 'solicitudes_contratos';
 	protected $primaryKey = 'idSolicitud';
 	public $timestamps = false;
-	use SoftDeletes;
 	protected $casts = [
 		'Fecha_solicitud' => 'datetime',
 		'Status_solicitud' => 'bool',

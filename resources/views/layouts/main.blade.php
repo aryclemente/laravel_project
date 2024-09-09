@@ -26,8 +26,7 @@
                         <li><a class="dropdown-item" href="{{ route('solicitudes.index') }}">Solicitudes</a>
                         </li>
                         <li><a class="dropdown-item" href="#">Cargos</a></li>
-                        <li><a class="dropdown-item" href="#">Trabajadores</a></li>
-                        <li><a class="dropdown-item" href="#">Contratos</a></li>
+
                     </ul>
                 </li>
 
@@ -35,11 +34,9 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                         aria-expanded="false">Contratos</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ route('solicitudes.index') }}">Solicitudes</a>
+                        <li><a class="dropdown-item" href="{{ route('contratos.index') }}">Contratos</a>
                         </li>
-                        <li><a class="dropdown-item" href="#">Servicios</a></li>
-                        <li><a class="dropdown-item" href="#">Personal</a></li>
-                        <li><a class="dropdown-item" href="#">Contratos</a></li>
+
                     </ul>
                 </li>
 

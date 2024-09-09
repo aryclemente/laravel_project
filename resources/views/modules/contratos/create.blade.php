@@ -3,7 +3,7 @@
 
     <body>
         <header class="p-2">
-            <h3>Nueva Solicitud</h3>
+            <h3>Nuevo Contrato</h3>
         </header>
         <main class="p-4">
             <div class="card ">
@@ -11,19 +11,23 @@
                     Formulario
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Ingresa los datos de la solicitud</h5>
+                    <h5 class="card-title">Ingresa los datos del Contrato</h5>
                     <p class="card-text">Recuerda revisar </p>
 
-                    <form action="{{ route('solicitudes.store') }}" method="POST" class="row g-3 needs-validation" novalidate>
+                    <form action="{{ route('contratos.store') }}" method="POST" class="row g-3 needs-validation" novalidate>
                         @csrf
                         @method('POST')
                         <div class="col-md-3 position-relative">
                             <label for="validationTooltip04" class="form-label">Tipo de Solicitud</label>
                             <select class="form-select" id="validationTooltip04" required>
-                                <option selected disabled value="">Elegir</option>
-                                @foreach ($tiposolicitud as $tipo)
-                                    <option value="{{ $tipo->idTipo_Solicitud }}">{{ $tipo->Tipo_Solicitud }}</option>
+                                @foreach ($tipo as $tipos)
+                                    <option value="{{ $tipos->idTipo_Solicitud }}"
+                                        {{ old('tipo_solicitud', $tipos->idTipo_Solicitud) }}>
+                                        {{ $tipos->Tipo_Solicitud }}
+                                    </option>
                                 @endforeach
+
+
                             </select>
                             <div class="valid-tooltip">
                                 Excelente!

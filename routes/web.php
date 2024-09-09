@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ContractsController;
-use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StaffController;
 
@@ -24,33 +23,33 @@ Route::post('/solicitudes', [SolicitudesContratoController::class, 'store'])->na
 Route::get('/solicitudes/edit/{id}', [SolicitudesContratoController::class, 'edit'])->name('solicitudes.edit');
 /*/Modificar una solicitud*/
 Route::put('/solicitudes/update/{id}', [SolicitudesContratoController::class, 'update'])->name('solicitudes.update');
-
 /*Muestra el detalle de una solicitud*/
 Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
+/*Eliminar solicitud*/
+Route::put('/solicitudes/delete/{id}', [SolicitudesContratoController::class, 'delete'])->name('solicitudes.delete');
 
-
-
-/*/Finalizar solicitud*/
-Route::post('/solicitudes/delete/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.delete');
 
 /*Ruta con Controlador | Muestra todos los contratos*/
-Route::get('/contracts', [ContractsController::class, 'ShowAllContracts']);
+Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.index');
+
+
+
+
 
 //Ruta con Controlador | Crea un nuevo Contrato
-Route::get('/contracts/CreateContract', [ContractsController::class, 'CreateContract']);
+Route::get('/contratos/create/{id}', [SolicitudesContratoController::class, 'create_contrato'])->name('contratos.create');
+Route::post('/contratos', [ContratoController::class, 'store'])->name('contratos.store');
 
 //Modifica un contrato seleccionado
-Route::get('/contracts/UpdateContract/{contract?}', [ContractsController::class, 'UpdateContract']);
+Route::get('/contratos/edit/{id}', [ContratoController::class, 'edit'])->name('contratos.edit');
+Route::put('/contratos/update/{id}', [ContratoController::class, 'update'])->name('contratos.update');
 
 //Se visualiza el detalle de un contrato
-Route::get('/contracts/{contract?}', [ContractsController::class, 'index']);
+Route::get('/contratos/show/{id}', [ContratoController::class, 'show'])->name('contratos.show');
+
+Route::post('/contratos/{id}/finalizar', [ContratoController::class, 'finalizar'])->name('contratos.finalizar');
 
 
-//Modifica una solicitud seleccionado
-Route::get('/requests/UpdateRequest/{request?}', [RequestsController::class, 'UpdateRequest']);
-
-//Se visualiza el detalle de una Solicitud
-Route::get('/requests/ShowRequest/{request?}', [RequestsController::class, 'ShowRequest']);
 
 //Muestra todos los servicios
 Route::get('/services', [ServicesController::class, 'ShowAllServices']);
