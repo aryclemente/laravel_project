@@ -27,7 +27,6 @@
                         <th>Fecha</th>
                         <th>Tipo_Solicitud</th>
                         <th>Status</th>
-                        <th>Vencimiento</th>
                         <th>Acciones</th>
 
                     </tr>
@@ -48,6 +47,9 @@
                             </td>
                             <td>
                                 {{ $solicitud->tipo_solicitud ? $solicitud->tipo_solicitud->Tipo_Solicitud : 'Sin tipo de solicitud' }}
+                            </td>
+                            <td class="">
+                                {{ $solicitud->Status_solicitud }}
                             </td>
                             <td class="text-center">
                                 <a class="btn btn-outline-success"

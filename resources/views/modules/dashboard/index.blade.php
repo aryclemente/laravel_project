@@ -1,18 +1,26 @@
 @extends('layouts/main')
 
-{{-- @section('title', 'Dashboard') --}}
-
 @section('contenido')
     <div class="container mt-5">
+        <!-- Mensaje de bienvenida -->
+        <div class="mb-4">
+            <div class="alert alert-info text-center">
+                <h4 class="alert-heading">Bienvenido al Sistema de Contratación</h4>
+                <p>Este es el módulo de gestión de contratos para IUJO - 4to Semestre - Informática.</p>
+            </div>
+        </div>
+
+        <!-- Resumen de contratos -->
         <figure class="text-center">
             <blockquote class="blockquote">
-                <p>Modulo de Contratacion</p>
+                <p>Módulo de Contratación</p>
             </blockquote>
             <figcaption class="blockquote-footer">
-                IUJO - 4to Semestre - Informatica
+                IUJO - 4to Semestre - Informática
             </figcaption>
         </figure>
-        <div class="row">
+
+        <div class="row mt-4">
             <div class="col-md-4">
                 <div class="card bg-success text-white mb-3">
                     <div class="card-header">Contratos Activos</div>

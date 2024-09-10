@@ -24,7 +24,7 @@ class EmpleadoFijo extends Model
         'status_solicitud',
     ];
 
-    // Si tu tabla no usa los timestamps, desactiva esto
+    // Si tu tabla no usa los timestamps
     public $timestamps = true;
 
     // Relación con la tabla Personas
@@ -45,4 +45,3 @@ class EmpleadoFijo extends Model
         return $this->belongsTo(Turno::class, 'turnos_id', 'idTurnos');
     }
 }
-

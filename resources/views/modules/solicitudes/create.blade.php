@@ -3,22 +3,22 @@
 
     <body>
         @stack('scripts')
-        <header class="p-2">
+        <header class="p-4">
             <h3>Nueva Solicitud</h3>
         </header>
-        <main class="p-4">
-            <div class="card ">
-                <div class="card-header">
+        <main class="px-4 py-2">
+            <div class="card border-success">
+                <div class="card-header border-success">
                     Formulario
                 </div>
-                <div class="card-body">
+                <div class="card-body ">
                     <h5 class="card-title">Ingresa los datos de la solicitud</h5>
                     <p class="card-text">Recuerda revisar </p>
 
                     <form action="{{ route('solicitudes.store') }}" method="POST" class="row g-3 needs-validation" novalidate>
                         @csrf
                         @method('POST')
-                        <div class="col-md-3 position-relative">
+                        <div class="col-md-3 position-relative ">
                             <label for="validationTooltip04" class="form-label">Tipo de Solicitud</label>
                             <select class="form-select" id="tipo_solicitud" name="tipo_solicitud" required>
                                 <option selected disabled value="">Elegir</option>
@@ -111,7 +111,7 @@
 
                             <div class="col-md-4 position-relative">
                                 <label for="validationTooltip01" class="form-label">Personas</label>
-                                <select class="form-select" id="personas_id" name="personas_id" required>
+                                <select class="form-select" id="personas_id_2" name="personas_id_2" required>
                                     <option selected disabled value="">Elegir</option>
                                     @foreach ($personas as $persona)
                                         <option value="{{ $persona->idPersonas }}">{{ $persona->Nombres }}
@@ -144,7 +144,7 @@
                         <div id="empresaFields" style="display:none;">
                             <div class="col-md-4 position-relative">
                                 <label for="validationTooltip01" class="form-label">Servicio</label>
-                                <select class="form-select" id="servicio_id" name="servicio_id" required>
+                                <select class="form-select" id="servicio_id_3" name="servicio_id_3" required>
                                     <option selected disabled value="">Elegir</option>
                                     @foreach ($servicios as $servicio)
                                         <option value="{{ $servicio->idServicio }}">{{ $servicio->Nombre_Servicio }}
@@ -180,8 +180,8 @@
                                 <label for="validationTooltip03" class="form-label">Remuneracion</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">$</span>
-                                    <input type="text" id="costo_servicio" name="costo_servicio" class="form-control"
-                                        aria-label="Amount (to the nearest dollar)">
+                                    <input type="text" id="costo_servicio_3" name="costo_servicio_3"
+                                        class="form-control" aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">,00</span>
                                 </div>
                                 <div class="invalid-tooltip">
@@ -191,15 +191,18 @@
                         </div>
 
                         <div class="col-12">
-                            <button class="btn btn-primary" type="submit">Registrar Solicitud</button>
+                            <button class="btn btn-outline-success" type="submit">Registrar Solicitud</button>
+                            <a class="btn btn-outline-info " href="{{ route('solicitudes.index') }}">Volver a la
+                                lista</a>
+                        </div>
+                        <div class="container p-2">
+
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div class="container p-2">
-                <a class="btn btn-outline-info " href="{{ route('solicitudes.index') }}">Volver a la lista</a>
-            </div>
+
 
         </main>
     @endsection
