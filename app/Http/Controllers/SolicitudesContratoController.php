@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cargo;
 use App\Models\SolicitudesContrato;
+use App\Models\EmpleadoFijo;
 use App\Models\Trabajadores;
 use App\Models\Empresa;
 use App\Models\EmpresasHasServicio;
@@ -44,58 +45,147 @@ class SolicitudesContratoController extends Controller
 
     public function store(Request $request)
     {
-
         $solicitudes = new SolicitudesContrato();
-        $personas_servicios = new PersonasHasServicio();
-        $empresas_servicios = new EmpresasHasServicio();
-
-
-
 
         $id_ts = $request->tipo_solicitud;
 
         switch ($id_ts) {
-            case 1:
 
-                return redirect()->route('solicitudes.index');
+            case 1:
+                // Validar los datos necesarios para el tipo 1
+                $request->validate([
+                    'personas_id' => 'required|exists:personas,idPersonas',
+                    'cargos_id' => 'required|exists:cargos,idCargos',
+                    'turnos_id' => 'required|exists:turnos,idTurnos',
+                ]);
+
+                // Crear el empleado fijo
+                $empleadoFijo = new EmpleadoFijo();
+                $empleadoFijo->personas_id = $request->personas_id;
+                $empleadoFijo->cargos_id = $request->cargos_id;
+                $empleadoFijo->turnos_id = $request->turnos_id;
+                $empleadoFijo->save();
+
+                // Crear la solicitud de contrato para empleado fijo
+                $solicitudes->Fecha_solicitud = now();
+                $solicitudes->Status_solicitud = true;
+                $solicitudes->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
+                $solicitudes->save();
+
+                return redirect()->route('solicitudes.index')->with('success', 'Solicitud para empleado fijo creada exitosamente.');
 
             case 2:
+                // Validar los datos necesarios para el Personal A destajo
 
+                $validatedData = $request->validate([
+                    'personas_id' => 'required|exists:personas_has_servicios,Personas_idPersonas',
+                    'servicio_id' => 'required|exists:personas_has_servicios,Servicios_idServicio',
+                    'costo_servicio' => 'required|numeric',
+
+                ]);
+                $messages = $validatedData->errors();
+
+                foreach ($messages->all() as $message) {
+                    echo $message;
+                }
+                dd($validatedData, $id_ts);
+
+                // Crear y guardar un nuevo registro en PersonasHasServicio
+                $personas_servicios = new PersonasHasServicio();
                 $personas_servicios->Servicios_idServicio = $request->servicio_id;
                 $personas_servicios->Personas_idPersonas = $request->personas_id;
                 $personas_servicios->Costo_Servicio = $request->costo_servicio;
                 $personas_servicios->save();
 
+                // Asociar el registro con la solicitud
                 $solicitudes->Fecha_solicitud = now();
                 $solicitudes->Status_solicitud = true;
                 $solicitudes->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
-
+                $solicitudes->save();
                 $personas_servicios->solicitudes_contratos()->save($solicitudes);
 
 
-                return redirect()->route('solicitudes.index');
-            case 3:
+                return redirect()->route('solicitudes.index')->with('success', 'Solicitud de Personal a Destajo creada exitosamente.');
 
+            case 3:
+                // Crear y guardar un nuevo registro en EmpresasHasServicio
+                $empresas_servicios = new EmpresasHasServicio();
                 $empresas_servicios->Servicios_idServicio = $request->servicio_id;
                 $empresas_servicios->Empresas_idEmpresa = $request->empresa_id;
                 $empresas_servicios->Costo_Servicio = $request->costo_servicio;
                 $empresas_servicios->save();
-                // dd($id_ts, $empresas_servicios, $solicitudes);
+
+                // Asociar el registro con la solicitud
                 $solicitudes->Fecha_solicitud = now();
                 $solicitudes->Status_solicitud = true;
                 $solicitudes->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
-
+                $solicitudes->save();
                 $empresas_servicios->solicitudes_contratos()->save($solicitudes);
 
+                return redirect()->route('solicitudes.index')->with('success', 'Solicitud para Servicios por Empresas creada exitosamente.');
 
-                return redirect()->route('solicitudes.index');
+            default:
+                return redirect()->route('solicitudes.index')->with('error', 'Tipo de solicitud no válido.');
         }
     }
 
+    // SolicitudesContratoController.php
+    public function generateContract($id)
+    {
+        $solicitud = SolicitudesContrato::with([
+            'personas_has_servicio',
+            'empresas_has_servicio',
+            'tipo_solicitud',
+            'contratos'
+        ])->findOrFail($id);
 
+
+        // Elige la vista basada en el tipo de solicitud
+        $view = 'modules.contratos.default_contract_template'; // Vista por defecto si no se encuentra una específica
+
+        switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
+            case 1:
+                $view = 'modules.contratos.fixed_contract_template';
+                break;
+            case 2:
+                $view = 'modules.contratos.task_contract_template';
+                break;
+            case 3:
+                $view = 'modules.contratos.company_contract_template';
+                break;
+        }
+
+        $pdf = \PDF::loadView($view, ['solicitud' => $solicitud]);
+
+        return $pdf->download('contrato_' . $id . '.pdf');
+    }
+
+    public function show($id)
+    {
+        // Encuentra la solicitud por su ID o lanza una excepción si no se encuentra
+        $solicitud = SolicitudesContrato::findOrFail($id);
+
+        // Inicializar variables
+        $persona_ps = null;
+        $servicio_ps = null;
+
+        // Obtén información adicional si es necesario
+        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->with('solicitudes_contratos')->get();
+
+        // Verificar si hay resultados y asignar variables
+        if ($personaservicio->isNotEmpty()) {
+            $ps = $personaservicio->first(); // Obtener el primer resultado
+            $persona_ps = $ps->persona;
+            $servicio_ps = $ps->servicio;
+        }
+
+        // Devuelve la vista con la solicitud y datos relacionados
+        return view('modules/solicitudes/show', compact('solicitud', 'persona_ps', 'servicio_ps'));
+    }
 
     public function edit(string $id)
     {
+        // Obtener todos los datos necesarios para la vista
         $solicitudes = SolicitudesContrato::all();
         $personas = Persona::all();
         $servicios = Servicio::all();
@@ -104,78 +194,63 @@ class SolicitudesContratoController extends Controller
         $cargos = Cargo::all();
         $empresas = Empresa::all();
 
-        $solicitud = SolicitudesContrato::FindOrFail($id);
-        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->with('solicitudes_contratos')->get();
-        foreach ($personaservicio as $ps) {
+        // Encontrar la solicitud por ID
+        $solicitud = SolicitudesContrato::findOrFail($id);
+
+        // Inicializar las variables
+        $persona_ps = null;
+        $servicio_ps = null;
+
+        // Obtener los datos relacionados con la solicitud
+        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+
+        // Solo necesitas el primer resultado
+        if ($personaservicio->isNotEmpty()) {
+            $ps = $personaservicio->first(); // Obtener el primer resultado
             $persona_ps = $ps->persona;
             $servicio_ps = $ps->servicio;
         }
 
-
-
-        return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas',  'servicios', 'turnos', 'cargos', 'empresas', 'ps', 'persona_ps', 'servicio_ps'));
+        // Pasar las variables a la vista
+        return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas', 'servicios', 'turnos', 'cargos', 'empresas', 'persona_ps', 'servicio_ps'));
     }
-
     public function update(Request $request, string $id)
     {
-        $solicitud = SolicitudesContrato::FindOrFail($id);
+        // Encontrar la solicitud por ID
+        $solicitud = SolicitudesContrato::findOrFail($id);
 
-        $id_ts = $request->tipo_solicitud;
+        // Validar los datos recibidos
+        $validatedData = $request->validate([
+            'tipo_solicitud' => 'required|integer',
+            'personas_id' => 'required|integer',
+            'cargos_id' => 'nullable|integer',
+            'turnos_id' => 'nullable|integer',
+            'servicio_id' => 'nullable|integer',
+            'costo_servicio' => 'nullable|numeric',
+        ]);
 
-        // switch ($id_ts) {
-        //     case 1:
-        //         return redirect()->route('solicitudes.index');
+        // Actualizar la solicitud
+        $solicitud->update($validatedData);
 
-        //     case 2:
-        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->with('solicitudes_contratos')->get();
-
+        // Actualizar PersonasHasServicio si es necesario
+        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
 
         foreach ($personaservicio as $ps) {
             $ps->Servicios_idServicio = $request->servicio_id;
             $ps->Personas_idPersonas = $request->personas_id;
             $ps->Costo_Servicio = $request->costo_servicio;
             $ps->save();
-            $ps->solicitudes_contratos()->save($solicitud);
         }
 
-        $solicitud->update($request->all());
-        return redirect()->route('solicitudes.index');
-        // case 3:
-        return redirect()->route('solicitudes.index');
-        // }
+        // Redirigir con mensaje de éxito
+        return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada correctamente.');
     }
 
-    // public function destroy(string $id)
-    // {
-    //     $solicitud = SolicitudesContrato::withTrashed()->findOrFail($id);
-    //     if ($solicitud->trashed()) {
-    //         $solicitud->restore();
-    //         return redirect()->back()->with('success', 'Solicitud restaurada.');
-    //     } else {
-    //         $solicitud->delete();
-    //         return redirect()->back()->with('success', 'Solicitud eliminada.');
-    //     }
-    // }
-
-    public function create_contrato(string $id)
+    public function destroy($id)
     {
-        $solicitudes = SolicitudesContrato::all();
-        $personas = Persona::all();
-        $servicios = Servicio::all();
-        $tiposolicitud = TipoSolicitud::all();
-        $turnos = Turno::all();
-        $cargos = Cargo::all();
-        $empresas = Empresa::all();
-
-        $solicitud = SolicitudesContrato::FindOrFail($id);
-        $tipo = TipoSolicitud::where('idTipo_Solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud)->with('solicitudes_contratos')->get();
-        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->with('solicitudes_contratos')->get();
-
-        foreach ($personaservicio as $ps) {
-            $persona = PersonasHasServicio::where('idPersonas', $ps->Personas_idPersonas)->with('persona')->get();
-            dd($persona, $ps);
-        }
-
-        return view('modules/contratos/create', compact('solicitud', 'tipo', 'personas',  'servicios', 'turnos', 'cargos', 'empresas'));
+        $solicitud = SolicitudesContrato::findOrFail($id);
+        $solicitud->delete();
+        return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito.');
     }
+    public function generarcontrato($id) {}
 }

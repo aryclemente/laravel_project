@@ -26,7 +26,7 @@ Route::put('/solicitudes/update/{id}', [SolicitudesContratoController::class, 'u
 /*Muestra el detalle de una solicitud*/
 Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
 /*Eliminar solicitud*/
-Route::put('/solicitudes/delete/{id}', [SolicitudesContratoController::class, 'delete'])->name('solicitudes.delete');
+Route::put('/solicitudes/delete/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.destroy');
 
 
 /*Ruta con Controlador | Muestra todos los contratos*/
@@ -37,7 +37,7 @@ Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.
 
 
 //Ruta con Controlador | Crea un nuevo Contrato
-Route::get('/contratos/create/{id}', [SolicitudesContratoController::class, 'create_contrato'])->name('contratos.create');
+Route::get('/contratos/create/{id}', [SolicitudesContratoController::class, 'generarcontrato'])->name('solicitudes.generateContract');
 Route::post('/contratos', [ContratoController::class, 'store'])->name('contratos.store');
 
 //Modifica un contrato seleccionado
