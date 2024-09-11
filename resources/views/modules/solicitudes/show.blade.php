@@ -9,8 +9,8 @@
 
     <main>
         <div class="container py-4">
-            <div class="card">
-                <div class="card-header">
+            <div class="card border-info">
+                <div class="card-header border-info">
                     <h5 class="card-title">Solicitud #{{ $solicitud->idSolicitud }}</h5>
                 </div>
                 <div class="card-body">
@@ -45,14 +45,15 @@
                     @endif
                 </div>
                 <div class="card-footer text-end">
-                    <a href="{{ route('solicitudes.index') }}" class="btn btn-primary">Volver a la lista</a>
-                    <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}" class="btn btn-warning">Editar</a>
+                    <a href="{{ route('solicitudes.index') }}" class="btn btn-outline-primary">Volver a la lista</a>
+                    <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}"
+                        class="btn btn-outline-warning">Editar</a>
                     <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST"
                         style="display:inline;"
                         onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <button type="submit" class="btn btn-outline-danger">Eliminar</button>
                     </form>
                 </div>
             </div>

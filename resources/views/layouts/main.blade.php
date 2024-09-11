@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html data-bs-theme="dark" lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -10,8 +10,7 @@
 
 </head>
 
-<body style="background-color: rgb(247, 255, 255)
-">
+<body>
 
     <div class="container">
         <div class="nav">
