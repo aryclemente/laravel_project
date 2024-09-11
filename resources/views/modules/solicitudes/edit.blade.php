@@ -31,7 +31,8 @@
                     </div>
 
                     {{-- Empleado Fijo --}}
-                    <div id="empleadoFijoFields" style="{{ old('tipo_solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud) == 1 ? 'display:block;' : 'display:none;' }}">
+                    <div id="empleadoFijoFields"
+                        style="{{ old('tipo_solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud) == 1 ? 'display:block;' : 'display:none;' }}">
                         <div class="col-md-4 position-relative">
                             <label for="personas_id" class="form-label">Personas</label>
                             <select class="form-select" id="personas_id" name="personas_id">
@@ -79,7 +80,8 @@
                     </div>
 
                     {{-- Empleados a Destajo --}}
-                    <div id="empleadoDestajoFields" style="{{ old('tipo_solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud) == 2 ? 'display:block;' : 'display:none;' }}">
+                    <div id="empleadoDestajoFields"
+                        style="{{ old('tipo_solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud) == 2 ? 'display:block;' : 'display:none;' }}">
                         <div class="col-md-4 position-relative">
                             <label for="servicio_id" class="form-label">Servicio</label>
                             <select class="form-select" id="servicio_id" name="servicio_id">
@@ -115,7 +117,7 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text">$</span>
                                 <input type="text" id="costo_servicio" name="costo_servicio" class="form-control"
-                                    value="{{ old('costo_servicio', $servicio_ps ? $servicio_ps->Costo_Servicio : '') }}">
+                                    value="{{ old('costo_servicio', $ps ? $ps->Costo_Servicio : '') }}">
                                 <span class="input-group-text">,00</span>
                             </div>
                             <div class="invalid-tooltip">
@@ -125,7 +127,8 @@
                     </div>
 
                     {{-- Empresa --}}
-                    <div id="empresaFields" style="{{ old('tipo_solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud) == 3 ? 'display:block;' : 'display:none;' }}">
+                    <div id="empresaFields"
+                        style="{{ old('tipo_solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud) == 3 ? 'display:block;' : 'display:none;' }}">
                         <div class="col-md-4 position-relative">
                             <label for="empresa_id" class="form-label">Empresa</label>
                             <select class="form-select" id="empresa_id" name="empresa_id">
@@ -145,7 +148,8 @@
                             <label for="remuneracion_empresa" class="form-label">Remuneración</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">$</span>
-                                <input type="text" id="remuneracion_empresa" name="remuneracion_empresa" class="form-control"
+                                <input type="text" id="remuneracion_empresa" name="remuneracion_empresa"
+                                    class="form-control"
                                     value="{{ old('remuneracion_empresa', $solicitud->remuneracion_empresa) }}">
                                 <span class="input-group-text">,00</span>
                             </div>
@@ -155,12 +159,11 @@
                         </div>
                     </div>
 
-                    <div class="col-12 py-4">
-                        <button class="btn btn-primary" type="submit">Actualizar Solicitud</button>
-                    </div>
-                    <div class="container p-2">
+                    <div class=" col-12 py-4">
+                        <button class="btn btn-outline-warning" type="submit">Actualizar Solicitud</button>
                         <a class="btn btn-outline-info" href="{{ route('solicitudes.index') }}">Volver a la lista</a>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -172,9 +175,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('tipo_solicitud').addEventListener('change', function() {
                 let tipo_solicitud = this.value;
-                document.getElementById('empleadoFijoFields').style.display = tipo_solicitud == 1 ? 'block' : 'none';
-                document.getElementById('empleadoDestajoFields').style.display = tipo_solicitud == 2 ? 'block' : 'none';
-                document.getElementById('empresaFields').style.display = tipo_solicitud == 3 ? 'block' : 'none';
+                document.getElementById('empleadoFijoFields').style.display = tipo_solicitud == 1 ?
+                    'block' : 'none';
+                document.getElementById('empleadoDestajoFields').style.display = tipo_solicitud == 2 ?
+                    'block' : 'none';
+                document.getElementById('empresaFields').style.display = tipo_solicitud == 3 ? 'block' :
+                    'none';
             });
 
             // For the initial load

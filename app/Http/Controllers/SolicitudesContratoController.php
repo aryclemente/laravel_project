@@ -123,6 +123,8 @@ class SolicitudesContratoController extends Controller
         $empresas_servicios = null;
         $persona_ps = null;
         $servicio_ps = null;
+        $empresa_es = null;
+        $servicio_es = null;
         $ps = null;
         $es = null;
 
@@ -177,7 +179,7 @@ class SolicitudesContratoController extends Controller
         }
 
         // Pasar las variables a la vista
-        return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas', 'servicios', 'turnos', 'cargos', 'empresas', 'persona_ps', 'servicio_ps'));
+        return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas', 'servicios', 'turnos', 'cargos', 'empresas', 'persona_ps', 'servicio_ps', 'ps'));
     }
 
     public function update(Request $request, string $id)
@@ -209,14 +211,32 @@ class SolicitudesContratoController extends Controller
         }
 
         // Redirigir con mensaje de éxito
-        return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada correctamente.');
+        return redirect()->route('solicitudes.show', $solicitud->idSolicitud)->with('success', 'Solicitud actualizada correctamente.');
     }
 
     public function destroy($id)
     {
         $solicitud = SolicitudesContrato::findOrFail($id);
-        $solicitud->delete();
+        if ($solicitud->Status_solicitud === 0) {
+            $solicitud->Status_solicitud = 1;
+            $solicitud->update();
+        } else {
+            $solicitud->Status_solicitud = 0;
+            $solicitud->update();
+        }
+        $solicitud->Status_solicitud = 0;
         return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito.');
+    }
+
+    public function deleteshow()
+    {
+        $tiposolicitud = TipoSolicitud::all();
+        $solicitudes = SolicitudesContrato::all();
+        dd($tiposolicitud, $solicitudes);
+        $solicitudes = SolicitudesContrato::where('Status_solicitud', false)->get();
+
+
+        return view('modules/solicitudes/deleteshow', compact('solicitudes', 'tiposolicitud'));
     }
 
 

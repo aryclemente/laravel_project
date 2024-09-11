@@ -31,7 +31,9 @@ Route::get('/solicitudes/{id}', [SolicitudesContratoController::class, 'show'])-
 Route::get('/solicitudes/generateContract/{id}', [SolicitudesContratoController::class, 'generateContract'])->name('solicitudes.generateContract');
 
 
-Route::delete('/solicitudes/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.destroy');
+Route::put('/solicitudes/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.destroy');
+
+Route::get('/solicitudes/deleteshow', [SolicitudesContratoController::class, 'deleteshow'])->name('solicitudes.deleteshow');
 
 /*Ruta con Controlador | Muestra todos los contratos*/
 Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.index');

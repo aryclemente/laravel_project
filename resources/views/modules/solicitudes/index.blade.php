@@ -68,8 +68,8 @@
                                     method="POST" style="display:inline;"
                                     onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');">
                                     @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
                                 </form>
                             </td>
 
@@ -78,6 +78,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <a class="btn btn-outline-danger" href="{{ route('solicitudes.deleteshow') }}">
+                Solicitudes Eliminadas
+            </a>
             <div class="contaniner p-4">
                 <table class="table caption">
                     <caption>Lista de Tipo de solicitudes</caption>
