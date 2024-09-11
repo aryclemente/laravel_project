@@ -121,20 +121,31 @@ class SolicitudesContratoController extends Controller
         $solicitud = SolicitudesContrato::findOrFail($id);
         $personaservicio = null;
         $empresas_servicios = null;
+        $persona_ps = null;
+        $servicio_ps = null;
+        $ps = null;
+        $es = null;
+
         switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
             case 1:
-                // OAgregar Logica entre EmpleadosFijos y Solicitudes
+                // Agregar Logica entre EmpleadosFijos y Solicitudes
                 $check = 1;
             case 2:
                 $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
-                $persona_ps = Persona::where('')
-                $servicio_ps = $personaservicio->servicio();
 
+                foreach ($personaservicio as $ps) {
+                    $persona_ps = $ps->persona;
+                    $servicio_ps = $ps->servicio;
+                }
 
             case 3:
-                $empresas_servicios = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitud->id_Personas_has_Servicios_)->get();
+                $empresas_servicios = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitud->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
+                foreach ($empresas_servicios as $es) {
+                    $empresa_es = $es->empresa;
+                    $servicio_es = $es->servicio;
+                }
         }
-        return view('modules.solicitudes.show', compact('solicitud', 'empresas_servicios', 'personaservicio'));
+        return view('modules.solicitudes.show', compact('solicitud', 'empresas_servicios', 'ps', 'servicio_ps', 'persona_ps', 'es', 'empresa_es', 'servicio_es'));
     }
 
     public function edit(string $id)

@@ -21,23 +21,27 @@
 
                     <!-- Añadir más detalles según sea necesario -->
                     @if ($solicitud->Tipo_Solicitud_idTipo_Solicitud == 1)
-                        <p><strong>Persona:</strong> {{ $solicitud->persona ? $solicitud->persona->nombre : 'No definido' }}
+                        {{-- <p><strong>Persona:</strong> {{ $solicitud->persona ? $solicitud->persona->nombre : 'No definido' }}
                         </p>
                         <p><strong>Cargo:</strong> {{ $solicitud->cargo ? $solicitud->cargo->nombre : 'No definido' }}</p>
-                        <p><strong>Turno:</strong> {{ $solicitud->turno ? $solicitud->turno->nombre : 'No definido' }}</p>
+                        <p><strong>Turno:</strong> {{ $solicitud->turno ? $solicitud->turno->nombre : 'No definido' }}</p> --}}
                     @elseif($solicitud->Tipo_Solicitud_idTipo_Solicitud == 2)
                         <p><strong>Servicio:</strong>
                             {{ $servicio_ps->Nombre_Servicio ? $servicio_ps->Nombre_Servicio : 'No definido' }}
                         </p>
+                        <p><strong>Persona:</strong>
+                            {{ $persona_ps->Nombres ? $persona_ps->Nombres : 'No definido' }}
+                        </p>
                         <p><strong>Costo del Servicio:</strong>
-                            {{ $personaservicio->Costo_Servicio ? $personaservicio->Costo_Servicio : 'No definido' }}</p>
+                            {{ $ps->Costo_Servicio ? $ps->Costo_Servicio : 'No definido' }}</p>
                     @elseif($solicitud->Tipo_Solicitud_idTipo_Solicitud == 3)
-                        <p><strong>Empresa:</strong> {{ $solicitud->empresa ? $solicitud->empresa->nombre : 'No definido' }}
+                        <p><strong>Empresa:</strong>
+                            {{ $empresa_es->Nombre_Empresa ? $empresa_es->Nombre_Empresa : 'No definido' }}
                         </p>
                         <p><strong>Servicio:</strong>
-                            {{ $solicitud->servicio ? $solicitud->servicio->nombre : 'No definido' }}</p>
+                            {{ $servicio_es->Nombre_Servicio ? $servicio_es->Nombre_Servicio : 'No definido' }}</p>
                         <p><strong>Costo del Servicio:</strong>
-                            {{ $solicitud->costo_servicio ? $solicitud->costo_servicio : 'No definido' }}</p>
+                            {{ $es->Costo_Servicio ? $es->Costo_Servicio : 'No definido' }}</p>
                     @endif
                 </div>
                 <div class="card-footer text-end">

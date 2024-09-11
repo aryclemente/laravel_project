@@ -11,12 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class EmpresasHasServicio
- * 
+ *
  * @property int $idEmpresas_has_Servicioscol
  * @property float|null $Costo_Servicio
  * @property int $Empresas_idEmpresa
  * @property int $Servicios_idServicio
- * 
+ *
  * @property Empresa $empresa
  * @property Servicio $servicio
  * @property Collection|SolicitudesContrato[] $solicitudes_contratos
