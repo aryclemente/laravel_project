@@ -113,7 +113,48 @@ class SolicitudesContratoController extends Controller
     }
 
     // SolicitudesContratoController.php
-    public function generarcontrato($id) {}
+    public function generarcontrato($id)
+    {
+        $solicitud = SolicitudesContrato::findOrFail($id);
+        $tipos = TipoSolicitud::where('idTipo_Solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud)->get();
+        $tipo = null;
+        if ($tipos->isNotEmpty()) {
+            $tipo = $tipos->first(); // Obtener el primer resultado
+        }
+        $personaservicio = null;
+        $empresas_servicios = null;
+        $persona_ps = null;
+        $servicio_ps = null;
+        $empresa_es = null;
+        $servicio_es = null;
+        $ps = null;
+        $es = null;
+        $persona = null;
+        $cargo = null;
+        $turno = null;
+
+        switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
+            case 1:
+                // Agregar Logica entre EmpleadosFijos y Solicitudes
+                $check = 1;
+            case 2:
+                $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+
+                foreach ($personaservicio as $ps) {
+                    $persona_ps = $ps->persona;
+                    $servicio_ps = $ps->servicio;
+                }
+
+            case 3:
+                $empresas_servicios = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitud->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
+                foreach ($empresas_servicios as $es) {
+                    $empresa_es = $es->empresa;
+                    $servicio_es = $es->servicio;
+                }
+        }
+        //dd($solicitud, $empresas_servicios, $ps, $servicio_ps, $persona_ps, $es, $empresa_es, $servicio_es, $tipo, $persona, $cargo, $turno);
+        return view('modules.contratos.create', compact('solicitud', 'empresas_servicios', 'ps', 'servicio_ps', 'persona_ps', 'es', 'empresa_es', 'servicio_es', 'tipo', 'persona', 'cargo', 'turno'));
+    }
 
     public function show($id)
     {
@@ -228,12 +269,12 @@ class SolicitudesContratoController extends Controller
         return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito.');
     }
 
-    public function deleteshow()
+    public function deletes()
     {
         $tiposolicitud = TipoSolicitud::all();
         $solicitudes = SolicitudesContrato::all();
         dd($tiposolicitud, $solicitudes);
-        $solicitudes = SolicitudesContrato::where('Status_solicitud', false)->get();
+        // $solicitudes = SolicitudesContrato::where('Status_solicitud', false)->get();
 
 
         return view('modules/solicitudes/deleteshow', compact('solicitudes', 'tiposolicitud'));

@@ -5,15 +5,12 @@ use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\SolicitudesContratoController;
-
 use App\Http\Controllers\DashboardController;
 
 /* Dashboard*/
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-
-
-/*/Muestra todas las solicitudes*/
+/*Muestra todas las solicitudes*/
 Route::get('/solicitudes', [SolicitudesContratoController::class, 'index'])->name('solicitudes.index');
 /*Crea una solicitud*/
 Route::get('/solicitudes/create', [SolicitudesContratoController::class, 'create'])->name('solicitudes.create');
@@ -28,18 +25,14 @@ Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'sho
 
 Route::get('/solicitudes/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
 //Genera un pdf
-Route::get('/solicitudes/generateContract/{id}', [SolicitudesContratoController::class, 'generateContract'])->name('solicitudes.generateContract');
-
+Route::get('/solicitudes/generateContract/{id}', [SolicitudesContratoController::class, 'generarcontrato'])->name('solicitudes.generateContract');
 
 Route::put('/solicitudes/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.destroy');
 
-Route::get('/solicitudes/deleteshow', [SolicitudesContratoController::class, 'deleteshow'])->name('solicitudes.deleteshow');
+Route::get('/solicitudes/delete', [SolicitudesContratoController::class, 'deletes'])->name('solicitudes.deleteshow');
 
 /*Ruta con Controlador | Muestra todos los contratos*/
 Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.index');
-
-
-
 
 
 //Ruta con Controlador | Crea un nuevo Contrato

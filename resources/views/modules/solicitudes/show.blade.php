@@ -41,7 +41,8 @@
                         <p><strong>Servicio:</strong>
                             {{ $servicio_es->Nombre_Servicio ? $servicio_es->Nombre_Servicio : 'No definido' }}</p>
                         <p><strong>Costo del Servicio:</strong>
-                            {{ $es->Costo_Servicio ? $es->Costo_Servicio : 'No definido' }}</p>
+                            {{ $es->Costo_Servicio ? $es->Costo_Servicio : 'No definido' }}
+                        </p>
                     @endif
                 </div>
                 <div class="card-footer text-end">
