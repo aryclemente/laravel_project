@@ -16,7 +16,7 @@
         <div class="nav">
             <ul class="nav justify-content-center nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">DashBoard</a>
+                    <a class="nav-link active" href="{{ route('dashboard.index') }}">DashBoard</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
