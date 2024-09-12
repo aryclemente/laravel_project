@@ -18,10 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $Remuneración
  * @property bool $Status_Contrato
  * @property int $Solicitudes_contratos_idSolicitud
- * @property int $Cargos_idCargos
- * @property int $Cargos_Turnos_idTurnos
  *
- * @property Cargo $cargo
  * @property SolicitudesContrato $solicitudes_contrato
  *
  * @package App\Models
@@ -50,10 +47,7 @@ class Contrato extends Model
 		'Solicitudes_contratos_idSolicitud'
 	];
 
-	public function cargo()
-	{
-		return $this->belongsTo(Cargo::class, 'Cargos_idCargos');
-	}
+
 
 	public function solicitudes_contrato()
 	{

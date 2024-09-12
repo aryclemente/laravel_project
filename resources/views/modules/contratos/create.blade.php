@@ -134,7 +134,11 @@
                     <input type="checkbox" name="acepto_terminos" id="acepto_terminos" required>
                     <label for="acepto_terminos">He leído y acepto los <a href="terminos_y_condiciones.html"
                             target="_blank">Términos y Condiciones</a></label>
-
+                    @error('terms')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                     <div class=" col-12 py-4">
                         <button class="btn btn-outline-success" type="submit">Generar Contrato</button>
                         <a class="btn btn-outline-info" href="{{ route('solicitudes.index') }}">Volver a la lista</a>

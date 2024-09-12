@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contrato;
+use App\Rules\AcceptedTerms;
+
 use App\Models\Cargo;
 use App\Models\SolicitudesContrato;
 use App\Models\EmpleadoFijo;
@@ -27,31 +29,41 @@ class ContratoController extends Controller
     public function store(Request $request, string $id)
     {
         $solicitud = SolicitudesContrato::findOrFail($id);
-        $request->validate([
 
-            'fecha_inicio' => 'required|exists:personas_has_servicios,Servicios_idServicio',
-            'fecha_final' => 'required|numeric',
+        $request->validate([
+            'fecha_inicio' => 'required|date|after:today',
+            'fecha_final' => 'required|date|after:today',
+            'acepto_terminos' => ['required', new AcceptedTerms],
         ]);
+
         switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
             case 1:
                 // Agregar Logica entre EmpleadosFijos y Solicitudes
                 $check = 1;
             case 2:
+
                 $request->validate([
-                    'remuneracion_ps' => 'required|exists:contratos,Remuneración',
+                    'remuneracion_ps' => 'required|numeric|min:0',
 
                 ]);
+
                 $contrato = new Contrato();
                 $contrato->Fecha_Inicio = $request->fecha_inicio;
                 $contrato->Fecha_Fin = $request->fecha_final;
                 $contrato->Remuneración = $request->remuneracion_ps;
                 $contrato->Status_Contrato = true;
                 $contrato->Solicitudes_contratos_idSolicitud = $request->tipo_solicitud;
-                $solicitud->contratos()->save($contrato);
-                dd($solicitud, $contrato, $request, $id);
 
+                $contrato->Solicitudes_contratos_idSolicitud = $solicitud->Tipo_Solicitud_idTipo_Solicitud;
+                $contrato->save();
+
+                return redirect()->route('contratos.index');
 
             case 3:
+                $request->validate([
+                    'remuneracion_es' => 'required|numeric|min:0|exists:contratos,Remuneración',
+
+                ]);
                 $empresas_servicios = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitud->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
                 if ($empresas_servicios->isNotEmpty()) {
                     $es = $empresas_servicios->first(); // Obtener el primer resultado
@@ -68,9 +80,9 @@ class ContratoController extends Controller
         // $contrato->estado = $request->accion === 'guardar' ? 'activo' : 'borrador';
         // // Asignar otros atributos según el tipo de contrato
 
-        // $contrato->save();
 
-        return redirect()->route('dashboard');
+        //dd($solicitud, $request, $es, $empresa_es, $servicio_es, $contrato);
+
     }
 
     public function show(string $id)
