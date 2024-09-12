@@ -139,21 +139,24 @@ class SolicitudesContratoController extends Controller
                 $check = 1;
             case 2:
                 $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
-
-                foreach ($personaservicio as $ps) {
+                if ($personaservicio->isNotEmpty()) {
+                    $ps = $personaservicio->first(); // Obtener el primer resultado
                     $persona_ps = $ps->persona;
                     $servicio_ps = $ps->servicio;
                 }
 
+
             case 3:
                 $empresas_servicios = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitud->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
-                foreach ($empresas_servicios as $es) {
+                if ($empresas_servicios->isNotEmpty()) {
+                    $es = $empresas_servicios->first(); // Obtener el primer resultado
                     $empresa_es = $es->empresa;
                     $servicio_es = $es->servicio;
                 }
         }
-        //dd($solicitud, $empresas_servicios, $ps, $servicio_ps, $persona_ps, $es, $empresa_es, $servicio_es, $tipo, $persona, $cargo, $turno);
-        return view('modules.contratos.create', compact('solicitud', 'empresas_servicios', 'ps', 'servicio_ps', 'persona_ps', 'es', 'empresa_es', 'servicio_es', 'tipo', 'persona', 'cargo', 'turno'));
+
+        //dd($solicitud, $ps, $servicio_ps, $persona_ps, $es, $empresa_es, $servicio_es, $tipo, $persona, $cargo, $turno);
+        return view('modules.contratos.create', compact('solicitud', 'ps', 'servicio_ps', 'persona_ps', 'es', 'empresa_es', 'servicio_es', 'tipo', 'persona', 'cargo', 'turno'));
     }
 
     public function show($id)

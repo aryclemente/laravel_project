@@ -37,7 +37,7 @@ Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.
 
 //Ruta con Controlador | Crea un nuevo Contrato
 // Route::get('/contratos/create/{id}', [SolicitudesContratoController::class, 'generarcontrato'])->name('solicitudes.generateContract');
-Route::post('/contratos', [ContratoController::class, 'store'])->name('contratos.store');
+Route::post('/contratos/{id}', [ContratoController::class, 'store'])->name('contratos.store');
 
 //Modifica un contrato seleccionado
 Route::get('/contratos/edit/{id}', [ContratoController::class, 'edit'])->name('contratos.edit');

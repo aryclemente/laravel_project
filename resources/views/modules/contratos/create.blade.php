@@ -12,8 +12,9 @@
             <div class="card-body">
                 <h5 class="card-title">Crear un nuevo contrato</h5>
                 <p class="card-text">Completa la siguiente informacion</p>
-                <form action="{{ route('contratos.store') }}" method="POST">
+                <form action="{{ route('contratos.store', $solicitud->idSolicitud) }}" method="POST">
                     @csrf
+                    {{-- @method('PUT') --}}
                     <div class="col-md-3 position-relative">
                         <label for="tipo_solicitud" class="form-label">Tipo de Solicitud</label>
                         <option class="form-select" id="tipo_solicitud" name="tipo_solicitud" required>
@@ -50,7 +51,7 @@
                         <div id="empleadoDestajoFields" style="display:block;">
 
                             <div class="col-md-4 position-relative">
-                                <label for="servicio_id" class="form-label">Servicio</label>
+                                <label for="servicio_ps" class="form-label">Servicio</label>
                                 <option class="form-select" value="">
                                     {{ $servicio_ps ? $servicio_ps->Nombre_Servicio : 'No definido' }}
                                 </option>
@@ -58,7 +59,7 @@
                             </div>
 
                             <div class="col-md-4 position-relative">
-                                <label for="personas_id" class="form-label">Personas</label>
+                                <label for="personas_ps" class="form-label">Personas</label>
                                 <option class="form-select" value="">
                                     {{ $persona_ps ? $persona_ps->Nombres : 'No definido' }}
 
@@ -66,16 +67,18 @@
                             </div>
 
                             <div class="col-md-6 position-relative">
-                                <label for="costo_servicio" class="form-label">Remuneración</label>
+                                <label for="remuneracion_ps" class="form-label">Remuneración</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">$</span>
-                                    <option class="form-select" value="">
-                                        {{ $ps ? $ps->Costo_Servicio : 'No definido' }}
-
-                                    </option>
-
+                                    <input type="text" id="remuneracion_ps" name="remuneracion_ps" class="form-control"
+                                        value="{{ $ps ? $ps->Costo_Servicio : 'No definido' }}">
                                     <span class="input-group-text">,00</span>
                                 </div>
+                                <div class="invalid-tooltip">
+                                    Por favor proporciona una remuneración válida.
+                                </div>
+
+
                             </div>
                         </div>
                     @elseif($solicitud->Tipo_Solicitud_idTipo_Solicitud == 3)
@@ -84,31 +87,59 @@
 
                             <div class="col-md-4 position-relative">
                                 <label for="empresa_id" class="form-label">Empresa</label>
-                                {{ $empresa_es ? $empresa_es->Nombre_Empresa : 'No definido' }}
+                                <option class="form-select value="">
+                                    {{ $empresa_es ? $empresa_es->Nombre_Empresa : 'No definido' }}
+
+                                </option>
 
 
                             </div>
-                            <p><strong>Servicio:</strong>
-                                {{ $servicio_es ? $servicio_es->Nombre_Servicio : 'No definido' }}</p>
+                            <div class="col-md-4 position-relative">
+                                <label for="servicio_es" class="form-label">Servicio</label>
+                                <option class="form-select value="">
+                                    {{ $servicio_es ? $servicio_es->Nombre_Servicio : 'No definido' }}
+
+                                </option>
+
+
+                            </div>
                             <div class="col-md-6 position-relative">
-                                <label for="remuneracion_empresa" class="form-label">Remuneración</label>
+                                <label for="remuneracion_es" class="form-label">Remuneración</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">$</span>
-                                    <input type="text" id="remuneracion_empresa" name="remuneracion_empresa"
-                                        class="form-control" value="">
-                                    {{ $es ? $es->Costo_Servicio : 'No definido' }}
-
+                                    <input type="text" id="remuneracion_es" name="remuneracion_es" class="form-control"
+                                        value="{{ $es ? $es->Costo_Servicio : 'No definido' }}">
                                     <span class="input-group-text">,00</span>
                                 </div>
+                                <div class="invalid-tooltip">
+                                    Por favor proporciona una remuneración válida.
+                                </div>
+
+
                             </div>
                         </div>
                     @endif
 
-                    <div class=" col-12 py-4">
-                        <button class="btn btn-outline-warning" type="submit">Actualizar Solicitud</button>
-                        <a class="btn btn-outline-info" href="{{ route('solicitudes.index') }}">Volver a la lista</a>
-                    </div>
 
+                    <label for="">
+                        Fecha_Inicio
+                    </label>
+                    <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio">
+
+                    <label for="">
+                        Fecha_final
+                    </label>
+                    <input type="date" class="form-control" name="fecha_final" id="fecha_final">
+
+                    <input type="checkbox" name="acepto_terminos" id="acepto_terminos" required>
+                    <label for="acepto_terminos">He leído y acepto los <a href="terminos_y_condiciones.html"
+                            target="_blank">Términos y Condiciones</a></label>
+
+                    <div class=" col-12 py-4">
+                        <button class="btn btn-outline-success" type="submit">Generar Contrato</button>
+                        <a class="btn btn-outline-info" href="{{ route('solicitudes.index') }}">Volver a la lista</a>
+
+                    </div>
                 </form>
             </div>
         </div>
