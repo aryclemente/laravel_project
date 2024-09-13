@@ -89,9 +89,9 @@ class SolicitudesContratoController extends Controller
                 return redirect()->route('solicitudes.show', $solicitudes->idSolicitud)->with('success', 'Solicitud de Personal a Destajo creada exitosamente.');
             case 3:
                 $request->validate([
-                    'empresa_id' => 'required|exists:personas_has_servicios,Personas_idPersonas',
-                    'servicio_id_3' => 'required|exists:personas_has_servicios,Servicios_idServicio',
-                    'costo_servicio_3' => 'required|numeric',
+                    'empresa_id' => 'required|integer|exists:empresas_has_servicios,Empresas_idEmpresa',
+                    'servicio_id_3' => 'required|integer|gt:0|exists:empresas_has_servicios,Servicios_idServicio',
+                    'costo_servicio_3' => 'required|numeric|gt:0',
                 ]);
                 // Crear y guardar un nuevo registro en EmpresasHasServicio
                 $empresas_servicios = new EmpresasHasServicio();
@@ -105,7 +105,7 @@ class SolicitudesContratoController extends Controller
                 $solicitudes->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
                 $solicitudes->save();
                 $empresas_servicios->solicitudes_contratos()->save($solicitudes);
-                return redirect()->route('solicitudes.index')->with('success', 'Solicitud para Servicios por Empresas creada exitosamente.');
+                return redirect()->route('solicitudes.show', $solicitudes->idSolicitud)->with('success', 'Solicitud para Servicios por Empresas creada exitosamente.');
             default:
                 return redirect()->route('solicitudes.index')->with('error', 'Tipo de solicitud no válido.');
         }
@@ -210,19 +210,46 @@ class SolicitudesContratoController extends Controller
         // Inicializar las variables
         $persona_ps = null;
         $servicio_ps = null;
+        $empresa_es = null;
+        $servicio_es = null;
+        $ps = null;
+        $es = null;
+        switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
+            case 1:
+                // Obtener los datos relacionados con la solicitud
+                // $empresaservicio = EmpresasHasServicio::where('idEmpresas_has_Servicioscol ', $solicitud->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
+                // if ($empresaservicio->isNotEmpty()) {
+                //     $es = $empresaservicio->first(); // Obtener el primer resultado
+                //     $empresa_es = $es->persona;
+                //     $servicio_es = $es->servicio;
+                // }
+                // // Pasar las variables a la vista
+                // return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas', 'servicios', 'turnos', 'cargos', 'empresas', 'persona_ps', 'servicio_ps', 'ps', 'es', '$empresa_es', 'servicio_es'));
+                $solicitudes->save();
+            case 2:
+                // Obtener los datos relacionados con la solicitud
+                $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+                if ($personaservicio->isNotEmpty()) {
+                    $ps = $personaservicio->first(); // Obtener el primer resultado
+                    $persona_ps = $ps->persona;
+                    $servicio_ps = $ps->servicio;
+                }
+                // Pasar las variables a la vista
 
-        // Obtener los datos relacionados con la solicitud
-        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+            case 3:
+                // Obtener los datos relacionados con la solicitud
 
-        // Solo necesitas el primer resultado
-        if ($personaservicio->isNotEmpty()) {
-            $ps = $personaservicio->first(); // Obtener el primer resultado
-            $persona_ps = $ps->persona;
-            $servicio_ps = $ps->servicio;
+                $empresaservicio = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitud->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
+                $es = $empresaservicio->first(); // Obtener el primer resultado
+                $empresa_es = $es->empresa;
+                $servicio_es = $es->servicio;
+                //dd($id, $solicitud, $es, $empresa_es, $servicio_es);
+
+
         }
-
         // Pasar las variables a la vista
-        return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas', 'servicios', 'turnos', 'cargos', 'empresas', 'persona_ps', 'servicio_ps', 'ps'));
+
+        return view('modules/solicitudes/edit', compact('solicitud', 'personas', 'tiposolicitud',  'servicios', 'persona_ps', 'servicio_ps', 'ps',  'empresas', 'es', 'empresa_es', 'servicio_es', 'cargos', 'turnos'));
     }
 
     public function update(Request $request, string $id)

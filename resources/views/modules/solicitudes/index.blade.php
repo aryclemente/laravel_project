@@ -18,7 +18,7 @@
 
         <div class="container p-3">
             <blockquote class="blockquote py-2">
-                <p>Personal Fijo</p>
+                <p>Solicitudes</p>
             </blockquote>
             <div class="row">
                 <div class="col ">

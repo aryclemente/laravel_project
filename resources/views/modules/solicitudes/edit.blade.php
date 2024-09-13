@@ -152,7 +152,20 @@
                                 Por favor selecciona una empresa.
                             </div>
                         </div>
-
+                        <div class="col-md-4 position-relative">
+                            <label for="servicio_es" class="form-label">Servicio</label>
+                            <select class="form-select" id="servicio_es" name="servicio_es">
+                                <option selected disabled value="">Elegir</option>
+                                @foreach ($servicios as $servicio)
+                                    <option value="{{ $servicio->idServicio }}"
+                                        {{ old('servicio_es', $servicio_es ? $servicio_es->idServicio : '') == $servicio->idServicio ? 'selected' : '' }}>
+                                        {{ $servicio->Nombre_Servicio }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-tooltip">
+                                Por favor selecciona un servicio.
+                            </div>
+                        </div>
                         <div class="col-md-6 position-relative">
                             <label for="remuneracion_empresa" class="form-label">Remuneración</label>
                             <div class="input-group mb-3">
