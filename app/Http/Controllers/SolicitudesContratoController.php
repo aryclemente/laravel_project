@@ -22,8 +22,8 @@ class SolicitudesContratoController extends Controller
     public function index()
     {
         $tiposolicitud = TipoSolicitud::all();
-        $solicitudes = SolicitudesContrato::all();
-        //$solicitudes = SolicitudesContrato::where('Status_solicitud', true)->get();
+        //$solicitudes = SolicitudesContrato::all();
+        $solicitudes = SolicitudesContrato::where('Status_solicitud', true)->get();
         $cargos = Cargo::all();
         $servicios = Servicio::all();
         return view('modules/solicitudes/index', compact('solicitudes', 'tiposolicitud'));
@@ -113,7 +113,51 @@ class SolicitudesContratoController extends Controller
     }
 
     // SolicitudesContratoController.php
-    public function generarcontrato($id) {}
+    public function generarcontrato($id)
+    {
+        $solicitud = SolicitudesContrato::findOrFail($id);
+        $tipos = TipoSolicitud::where('idTipo_Solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud)->get();
+        $tipo = null;
+        if ($tipos->isNotEmpty()) {
+            $tipo = $tipos->first(); // Obtener el primer resultado
+        }
+        $personaservicio = null;
+        $empresas_servicios = null;
+        $persona_ps = null;
+        $servicio_ps = null;
+        $empresa_es = null;
+        $servicio_es = null;
+        $ps = null;
+        $es = null;
+        $persona = null;
+        $cargo = null;
+        $turno = null;
+
+        switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
+            case 1:
+                // Agregar Logica entre EmpleadosFijos y Solicitudes
+                $check = 1;
+            case 2:
+                $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+                if ($personaservicio->isNotEmpty()) {
+                    $ps = $personaservicio->first(); // Obtener el primer resultado
+                    $persona_ps = $ps->persona;
+                    $servicio_ps = $ps->servicio;
+                }
+
+
+            case 3:
+                $empresas_servicios = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitud->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
+                if ($empresas_servicios->isNotEmpty()) {
+                    $es = $empresas_servicios->first(); // Obtener el primer resultado
+                    $empresa_es = $es->empresa;
+                    $servicio_es = $es->servicio;
+                }
+        }
+
+        //dd($solicitud, $ps, $servicio_ps, $persona_ps, $es, $empresa_es, $servicio_es, $tipo, $persona, $cargo, $turno);
+        return view('modules.contratos.create', compact('solicitud', 'ps', 'servicio_ps', 'persona_ps', 'es', 'empresa_es', 'servicio_es', 'tipo', 'persona', 'cargo', 'turno'));
+    }
 
     public function show($id)
     {
@@ -123,6 +167,8 @@ class SolicitudesContratoController extends Controller
         $empresas_servicios = null;
         $persona_ps = null;
         $servicio_ps = null;
+        $empresa_es = null;
+        $servicio_es = null;
         $ps = null;
         $es = null;
 
@@ -177,7 +223,7 @@ class SolicitudesContratoController extends Controller
         }
 
         // Pasar las variables a la vista
-        return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas', 'servicios', 'turnos', 'cargos', 'empresas', 'persona_ps', 'servicio_ps'));
+        return view('modules/solicitudes/edit', compact('solicitud', 'tiposolicitud', 'personas', 'servicios', 'turnos', 'cargos', 'empresas', 'persona_ps', 'servicio_ps', 'ps'));
     }
 
     public function update(Request $request, string $id)
@@ -209,59 +255,30 @@ class SolicitudesContratoController extends Controller
         }
 
         // Redirigir con mensaje de éxito
-        return redirect()->route('solicitudes.index')->with('success', 'Solicitud actualizada correctamente.');
+        return redirect()->route('solicitudes.show', $solicitud->idSolicitud)->with('success', 'Solicitud actualizada correctamente.');
     }
 
-    public function destroy($id)
+    public function desactivar($id)
     {
         $solicitud = SolicitudesContrato::findOrFail($id);
-        $solicitud->delete();
+        if ($solicitud->Status_solicitud === false) {
+            $solicitud->Status_solicitud = true;
+            $solicitud->update();
+        } else {
+            $solicitud->Status_solicitud = false;
+            $solicitud->update();
+        }
         return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito.');
     }
 
-
-    public function generateContract($id)
+    public function deleteshow()
     {
-        // Obtener la solicitud por ID
-        $solicitud = SolicitudesContrato::findOrFail($id);
-        // Validar el tipo de contrato y seleccionar la vista
+        $tiposolicitud = TipoSolicitud::all();
+        //$solicitudes = SolicitudesContrato::all();
+        //dd($tiposolicitud, $solicitudes);
+        $solicitudes = SolicitudesContrato::where('Status_solicitud', false)->get();
 
-        switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
-            case 1:
-                $view = 'modules.contratos.fixed_contract_template';
-                break;
-            case 2:
-                $view = 'modules.contratos.task_contract_template';
-                break;
-            case 3:
-                $view = 'modules.contratos.company_contract_template';
-                break;
-            default:
-                abort(404, 'Tipo de contrato no válido.');
-        }
 
-        // $solicitud = SolicitudesContrato::with([
-        //     'personas_has_servicio',
-        //     'empresas_has_servicio',
-        //     'tipo_solicitud',
-        //     'contratos'
-        // ])->findOrFail($id);
-        // Elige la vista basada en el tipo de solicitud
-        // $view = 'modules.contratos.default_contract_template'; // Vista por defecto si no se encuentra una específica
-        // switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
-        //     case 1:
-        //         $view = 'modules.contratos.fixed_contract_template';
-        //         break;
-        //     case 2:
-        //         $view = 'modules.contratos.task_contract_template';
-        //         break;
-        //     case 3:
-        //         $view = 'modules.contratos.company_contract_template';
-        //         break;
-        // }
-
-        $pdf = \PDF::loadView($view, ['solicitud' => $solicitud]);
-
-        return $pdf->download('contrato_' . $id . '.pdf');
+        return view('modules/solicitudes/deleteshow', compact('solicitudes', 'tiposolicitud'));
     }
 }
