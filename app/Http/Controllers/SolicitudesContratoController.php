@@ -56,17 +56,21 @@ class SolicitudesContratoController extends Controller
                     'turnos_id' => 'required|exists:turnos,idTurnos',
                 ]);
                 // Crear el empleado fijo
-                $empleadoFijo = new EmpleadoFijo();
-                $empleadoFijo->personas_id = $request->personas_id;
-                $empleadoFijo->cargos_id = $request->cargos_id;
-                $empleadoFijo->turnos_id = $request->turnos_id;
+                $empleadoFijo = new Trabajadores();
+                $empleadoFijo->Cargos_idCargos   = $request->cargos_id;
+                $empleadoFijo->Personas_idPersonas  = $request->personas_id;
+                $empleadoFijo->Status_Trabajador = true;
+                $empleadoFijo->Codigo_Trabajador = null;
+                //$empleadoFijo->Turnos_idTurnos = $request->turnos_id;
                 $empleadoFijo->save();
                 // Crear la solicitud de contrato para empleado fijo
                 $solicitudes->Fecha_solicitud = now();
                 $solicitudes->Status_solicitud = true;
                 $solicitudes->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
+                $solicitudes->trabajadores()->associate($empleadoFijo);
+
                 $solicitudes->save();
-                return redirect()->route('solicitudes.index')->with('success', 'Solicitud para empleado fijo creada exitosamente.');
+                return redirect()->route('solicitudes.show', $solicitudes->idSolicitud)->with('success', 'Solicitud para empleado fijo creada exitosamente.');
             case 2:
                 // Validar los datos necesarios para el Personal A destajo
                 $request->validate([
@@ -161,7 +165,7 @@ class SolicitudesContratoController extends Controller
     public function show($id)
     {
         // Obtener la solicitud por ID
-        $solicitud = SolicitudesContrato::findOrFail($id);
+        $solicitudes = SolicitudesContrato::findOrFail($id);
         $personaservicio = null;
         $empresas_servicios = null;
         $persona_ps = null;
@@ -170,13 +174,25 @@ class SolicitudesContratoController extends Controller
         $servicio_es = null;
         $ps = null;
         $es = null;
+        $empleadoFijo = null;
+        $cargo = null;
+        $persona = null;
+        $turno = null;
 
-        switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
+        switch ($solicitudes->Tipo_Solicitud_idTipo_Solicitud) {
             case 1:
-                // Agregar Logica entre EmpleadosFijos y Solicitudes
-                $check = 1;
+                $empleadoFijos = Trabajadores::where('idTrabajador', $solicitudes->id_Trabajador_id)->get();
+                $empleadoFijo = $empleadoFijos->first();
+
+                //$cargos = $empleadoFijo->cargo();
+
+                $cargos = Cargo::where('idCargos', $empleadoFijo->Cargos_idCargos)->get();
+                $cargo = $cargos->first();
+                $personas = Persona::where('idPersonas', $empleadoFijo->Personas_idPersonas)->get();
+                $persona = $personas->first();
+
             case 2:
-                $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+                $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitudes->id_Personas_has_Servicios_)->get();
 
                 foreach ($personaservicio as $ps) {
                     $persona_ps = $ps->persona;
@@ -184,13 +200,13 @@ class SolicitudesContratoController extends Controller
                 }
 
             case 3:
-                $empresas_servicios = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitud->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
+                $empresas_servicios = EmpresasHasServicio::where('idEmpresas_has_Servicioscol', $solicitudes->Empresas_has_Servicios_idEmpresas_has_Servicioscol)->get();
                 foreach ($empresas_servicios as $es) {
                     $empresa_es = $es->empresa;
                     $servicio_es = $es->servicio;
                 }
         }
-        return view('modules.solicitudes.show', compact('solicitud', 'empresas_servicios', 'ps', 'servicio_ps', 'persona_ps', 'es', 'empresa_es', 'servicio_es'));
+        return view('modules.solicitudes.show', compact('solicitudes', 'empresas_servicios', 'ps', 'servicio_ps', 'persona_ps', 'es', 'empresa_es', 'servicio_es', 'empleadoFijo', 'cargo', 'persona', 'turno'));
     }
 
     public function edit(string $id)
@@ -256,7 +272,68 @@ class SolicitudesContratoController extends Controller
     {
         // Encontrar la solicitud por ID
         $solicitud = SolicitudesContrato::findOrFail($id);
-
+        switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
+            case 1:
+                // Validar los datos necesarios para el tipo 1
+                $request->validate([
+                    'personas_id' => 'required|exists:personas,idPersonas',
+                    'cargos_id' => 'required|exists:cargos,idCargos',
+                    'turnos_id' => 'required|exists:turnos,idTurnos',
+                ]);
+                // Crear el empleado fijo
+                $empleadoFijo = new EmpleadoFijo();
+                $empleadoFijo->personas_id = $request->personas_id;
+                $empleadoFijo->cargos_id = $request->cargos_id;
+                $empleadoFijo->turnos_id = $request->turnos_id;
+                $empleadoFijo->save();
+                // Crear la solicitud de contrato para empleado fijo
+                $solicitud->Fecha_solicitud = now();
+                $solicitud->Status_solicitud = true;
+                $solicitud->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
+                $solicitud->save();
+                return redirect()->route('solicitudes.index')->with('success', 'Solicitud para empleado fijo creada exitosamente.');
+            case 2:
+                // Validar los datos necesarios para el Personal A destajo
+                $request->validate([
+                    'personas_id_2' => 'required|integer|gt:0|exists:personas_has_servicios,Personas_idPersonas',
+                    'servicio_id' => 'required|integer|gt:0|exists:personas_has_servicios,Servicios_idServicio',
+                    'costo_servicio' => 'required|numeric|gt:0',
+                ]);
+                // Crear y guardar un nuevo registro en PersonasHasServicio
+                $personas_servicios = new PersonasHasServicio();
+                $personas_servicios->Servicios_idServicio = $request->servicio_id;
+                $personas_servicios->Personas_idPersonas = $request->personas_id_2;
+                $personas_servicios->Costo_Servicio = $request->costo_servicio;
+                $personas_servicios->save();
+                // Asociar el registro con la solicitud
+                $solicitud->Fecha_solicitud = now();
+                $solicitud->Status_solicitud = true;
+                $solicitud->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
+                $solicitud->save();
+                $personas_servicios->solicitudes_contratos()->save($solicitud);
+                return redirect()->route('solicitudes.show', $solicitud->idSolicitud)->with('success', 'Solicitud de Personal a Destajo creada exitosamente.');
+            case 3:
+                $request->validate([
+                    'empresa_id' => 'required|integer|exists:empresas_has_servicios,Empresas_idEmpresa',
+                    'servicio_id_3' => 'required|integer|gt:0|exists:empresas_has_servicios,Servicios_idServicio',
+                    'costo_servicio_3' => 'required|numeric|gt:0',
+                ]);
+                // Crear y guardar un nuevo registro en EmpresasHasServicio
+                $empresas_servicios = new EmpresasHasServicio();
+                $empresas_servicios->Servicios_idServicio = $request->servicio_id_3;
+                $empresas_servicios->Empresas_idEmpresa = $request->empresa_id;
+                $empresas_servicios->Costo_Servicio = $request->costo_servicio_3;
+                $empresas_servicios->save();
+                // Asociar el registro con la solicitud
+                $solicitud->Fecha_solicitud = now();
+                $solicitud->Status_solicitud = true;
+                $solicitud->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
+                $solicitud->save();
+                $empresas_servicios->solicitudes_contratos()->save($solicitud);
+                return redirect()->route('solicitudes.show', $solicitud->idSolicitud)->with('success', 'Solicitud para Servicios por Empresas creada exitosamente.');
+            default:
+                return redirect()->route('solicitudes.index')->with('error', 'Tipo de solicitud no válido.');
+        }
         // Validar los datos recibidos
         $validatedData = $request->validate([
             'tipo_solicitud' => 'required|integer|exists:tipo_solicitud,idTipo_Solicitud|gt:0',

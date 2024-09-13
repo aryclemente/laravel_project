@@ -27,6 +27,7 @@ class Cargo extends Model
 {
 	protected $table = 'cargos';
 	public $timestamps = false;
+	protected $primaryKey = 'idCargos';
 
 	protected $casts = [
 		'Turnos_idTurnos1' => 'int'

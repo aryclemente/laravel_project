@@ -20,10 +20,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int|null $Tipo_Solicitud_idTipo_Solicitud
  * @property int|null $id_Personas_has_Servicios_
  * @property int|null $Empresas_has_Servicios_idEmpresas_has_Servicioscol
+ * @property int|null $id_Trabajador_id
+
  *
  * @property EmpresasHasServicio|null $empresas_has_servicio
  * @property PersonasHasServicio|null $personas_has_servicio
  * @property TipoSolicitud|null $tipo_solicitud
+ * @property Trabajadores|null $id_Trabajador_id
+
  * @property Collection|Contrato[] $contratos
  *
  * @package App\Models
@@ -39,7 +43,8 @@ class SolicitudesContrato extends Model
 		'Status_solicitud' => 'bool',
 		'Tipo_Solicitud_idTipo_Solicitud' => 'int',
 		'id_Personas_has_Servicios_' => 'int',
-		'Empresas_has_Servicios_idEmpresas_has_Servicioscol' => 'int'
+		'Empresas_has_Servicios_idEmpresas_has_Servicioscol' => 'int',
+		'id_Trabajador_id ' => 'int'
 	];
 
 	protected $fillable = [
@@ -47,7 +52,8 @@ class SolicitudesContrato extends Model
 		'Status_solicitud',
 		'Tipo_Solicitud_idTipo_Solicitud',
 		'id_Personas_has_Servicios_',
-		'Empresas_has_Servicios_idEmpresas_has_Servicioscol'
+		'Empresas_has_Servicios_idEmpresas_has_Servicioscol',
+		'id_Trabajador_id'
 	];
 
 	public function empresas_has_servicio()
@@ -63,6 +69,10 @@ class SolicitudesContrato extends Model
 	public function tipo_solicitud()
 	{
 		return $this->belongsTo(TipoSolicitud::class, 'Tipo_Solicitud_idTipo_Solicitud');
+	}
+	public function trabajadores()
+	{
+		return $this->belongsTo(Trabajadores::class, 'id_Trabajador_id');
 	}
 
 	public function contratos()
