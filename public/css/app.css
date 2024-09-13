@@ -2,12 +2,19 @@
 
 :root{
     --beige:  #fcf3cf ;
-    --green:  #DAF7A6 ;
+    --green:  #9ed140 ;
     --mustard:  #FFC300 ;
     --tomatoe-red: #FF5733 ;
     --wine:  #C70039 ;
     --dark-wine:  #900C3F;
+    --beige-degree:  #fcf3cf60 ;
+    --green-degree:  #9ed14060 ;
+    --mustard-degree:  #FFC30060 ;
+    --tomatoe-red-degree: #FF573360;
+    --wine-degree:  #C7003960 ;
+    --dark-wine-degree:  #900C3F60;
 }
+/* colores fuertes */
 .root-bg-beige{
     background-color: var(--beige);
 }
@@ -23,19 +30,60 @@
 .root-bg-dark{
     background-color: var(--dark-wine);
 }
+
+/* tonos menores */
+.root-bg-beige-degree{
+    background-color: var(--beige-degree);
+}
+.root-bg-green-degree{
+    background-color: var(--green-degree);
+}
+.root-bg-tomatoe-degree{
+    background-color: var(--tomatoe-red-degree);
+}
+.root-bg-wine-degree{
+    background-color: var(--wine-degree);
+}
+.root-bg-dark-degree{
+    background-color: var(--dark-wine-degree);
+}
 .lateral-nav-desktop{
     position: absolute;
 }
+
+.title-color {
+    color: var(--tomatoe-red);
+}
 .nav-item-mobile{
-    width: 200px;
-    font-weight: bold;
-    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
     text-align: center;
     margin: auto;
     margin-top: 20px;
     transition: all 0.4s;
+    >i{
+        padding: 0 15px;
+    }
 }
 .nav-item-mobile:hover{
+    width: 100%;
+    border: 12px;
+    background-color: var(--tomatoe-red);
+}
+.lateral-nav-item-mobile{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    width: 160px;
+    font-weight: bold;
+    margin: auto;
+    margin-top: 20px;
+    transition: all 0.4s;
+}
+.lateral-nav-item-mobile:hover{
     width: 100%;
     border: 12px;
     background-color: var(--tomatoe-red);
