@@ -35,14 +35,16 @@
 
                     <td class="py-2 px-4 border-b">
                         <a class="btn btn-outline-success"
-                            href="{{ route('solicitudes.ContractPDF', $contrato->idContratos) }}">Descargar
+                            href="{{ route('contratos.ContractPDF', $contrato->idContratos) }}">Descargar
                             PDF</a>
-                        <a href="{{ route('contratos.show', $contrato->idContratos) }}" class="text-blue-500">Ver</a>
-                        <a href="{{ route('contratos.edit', $contrato->idContratos) }}" class="text-blue-500">Editar</a>
+                        <a href="{{ route('contratos.show', $contrato->idContratos) }}" class="btn btn-outline-info">Ver
+                            Detalle</a>
+                        <a href="{{ route('contratos.edit', $contrato->idContratos) }}"
+                            class="btn btn-outline-warning">Editar</a>
                         <form action="{{ route('contratos.finalizar', $contrato->idContratos) }}" method="POST"
                             class="inline">
                             @csrf
-                            <button type="submit" class="text-red-500">Finalizar</button>
+                            <button type="submit" class="btn btn-outline-danger">Finalizar</button>
                         </form>
                     </td>
                     </tr>

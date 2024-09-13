@@ -64,11 +64,10 @@
                                     href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}">
                                     Modificar
                                 </a>
-                                <form action="{{ route('solicitudes.destroy', ['id' => $solicitud->idSolicitud]) }}"
+                                <form action="{{ route('solicitudes.desactivar', ['id' => $solicitud->idSolicitud]) }}"
                                     method="POST" style="display:inline;"
                                     onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');">
                                     @csrf
-                                    @method('PUT')
                                     <button type="submit" class="btn btn-outline-danger">Eliminar</button>
                                 </form>
                             </td>

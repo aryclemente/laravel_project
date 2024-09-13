@@ -22,8 +22,8 @@ class SolicitudesContratoController extends Controller
     public function index()
     {
         $tiposolicitud = TipoSolicitud::all();
-        $solicitudes = SolicitudesContrato::all();
-        //$solicitudes = SolicitudesContrato::where('Status_solicitud', true)->get();
+        //$solicitudes = SolicitudesContrato::all();
+        $solicitudes = SolicitudesContrato::where('Status_solicitud', true)->get();
         $cargos = Cargo::all();
         $servicios = Servicio::all();
         return view('modules/solicitudes/index', compact('solicitudes', 'tiposolicitud'));
@@ -258,26 +258,25 @@ class SolicitudesContratoController extends Controller
         return redirect()->route('solicitudes.show', $solicitud->idSolicitud)->with('success', 'Solicitud actualizada correctamente.');
     }
 
-    public function destroy($id)
+    public function desactivar($id)
     {
         $solicitud = SolicitudesContrato::findOrFail($id);
-        if ($solicitud->Status_solicitud === 0) {
-            $solicitud->Status_solicitud = 1;
+        if ($solicitud->Status_solicitud === false) {
+            $solicitud->Status_solicitud = true;
             $solicitud->update();
         } else {
-            $solicitud->Status_solicitud = 0;
+            $solicitud->Status_solicitud = false;
             $solicitud->update();
         }
-        $solicitud->Status_solicitud = 0;
         return redirect()->route('solicitudes.index')->with('success', 'Solicitud eliminada con éxito.');
     }
 
-    public function deletes()
+    public function deleteshow()
     {
         $tiposolicitud = TipoSolicitud::all();
-        $solicitudes = SolicitudesContrato::all();
-        dd($tiposolicitud, $solicitudes);
-        // $solicitudes = SolicitudesContrato::where('Status_solicitud', false)->get();
+        //$solicitudes = SolicitudesContrato::all();
+        //dd($tiposolicitud, $solicitudes);
+        $solicitudes = SolicitudesContrato::where('Status_solicitud', false)->get();
 
 
         return view('modules/solicitudes/deleteshow', compact('solicitudes', 'tiposolicitud'));

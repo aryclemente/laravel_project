@@ -22,27 +22,21 @@ Route::get('/solicitudes/edit/{id}', [SolicitudesContratoController::class, 'edi
 Route::put('/solicitudes/update/{id}', [SolicitudesContratoController::class, 'update'])->name('solicitudes.update');
 /*Muestra el detalle de una solicitud*/
 Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
+//Route::get('/solicitudes/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
+Route::post('/solicitudes/{id}', [SolicitudesContratoController::class, 'desactivar'])->name('solicitudes.desactivar');
 
-Route::get('/solicitudes/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
-Route::put('/solicitudes/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.destroy');
-
-Route::get('/solicitudes/delete', [SolicitudesContratoController::class, 'deletes'])->name('solicitudes.deleteshow');
+Route::get('/solicitudes/delete', [SolicitudesContratoController::class, 'deleteshow'])->name('solicitudes.deleteshow');
 
 
 //Crear un Contrato
 Route::get('/solicitudes/generarcontrato/{id}', [SolicitudesContratoController::class, 'generarcontrato'])->name('solicitudes.generarcontrato');
+Route::post('/contratos/{id}', [ContratoController::class, 'store'])->name('contratos.store');
+
 //Genera un pdf
-Route::get('/solicitudes/ContractPDF/{id}', [ContratoController::class, 'ContractPDF'])->name('solicitudes.ContractPDF');
-
-
+Route::get('/contratos/ContractPDF/{id}', [ContratoController::class, 'ContractPDF'])->name('contratos.ContractPDF');
 
 /*Ruta con Controlador | Muestra todos los contratos*/
 Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.index');
-
-
-//Ruta con Controlador | Crea un nuevo Contrato
-// Route::get('/contratos/create/{id}', [SolicitudesContratoController::class, 'generarcontrato'])->name('solicitudes.generateContract');
-Route::post('/contratos/{id}', [ContratoController::class, 'store'])->name('contratos.store');
 
 //Modifica un contrato seleccionado
 Route::get('/contratos/edit/{id}', [ContratoController::class, 'edit'])->name('contratos.edit');
@@ -55,26 +49,26 @@ Route::post('/contratos/{id}/finalizar', [ContratoController::class, 'finalizar'
 
 
 
-//Muestra todos los servicios
-Route::get('/services', [ServicesController::class, 'ShowAllServices']);
+// //Muestra todos los servicios
+// Route::get('/services', [ServicesController::class, 'ShowAllServices']);
 
-//Ruta con Controlador | Crea un nuevo servicio
-Route::get('/services/CreateService', [ServicesController::class, 'CreateService']);
+// //Ruta con Controlador | Crea un nuevo servicio
+// Route::get('/services/CreateService', [ServicesController::class, 'CreateService']);
 
-//Modifica un servicio seleccionado
-Route::get('/services/UpdateService/{service?}', [ServicesController::class, 'UpdateService']);
+// //Modifica un servicio seleccionado
+// Route::get('/services/UpdateService/{service?}', [ServicesController::class, 'UpdateService']);
 
-//Se visualiza el detalle de un Servicio
-Route::get('/services/ShowService/{service?}', [ServicesController::class, 'ShowService']);
+// //Se visualiza el detalle de un Servicio
+// Route::get('/services/ShowService/{service?}', [ServicesController::class, 'ShowService']);
 
-//Muestra todo el personal
-Route::get('/staff', [StaffController::class, 'ShowAllStaff']);
+// //Muestra todo el personal
+// Route::get('/staff', [StaffController::class, 'ShowAllStaff']);
 
-//Ruta con Controlador | Crea un nuevo personal
-Route::get('/staff/CreateStaff', [StaffController::class, 'CreateStaff']);
+// //Ruta con Controlador | Crea un nuevo personal
+// Route::get('/staff/CreateStaff', [StaffController::class, 'CreateStaff']);
 
-//Modifica un personal existente
-Route::get('/staff/UpdateStaff/{staff?}', [StaffController::class, 'UpdateStaff']);
+// //Modifica un personal existente
+// Route::get('/staff/UpdateStaff/{staff?}', [StaffController::class, 'UpdateStaff']);
 
-//Se visualiza el detalle de un personal
-Route::get('/staff/ShowStaff/{staff?}', [StaffController::class, 'ShowStaff']);
+// //Se visualiza el detalle de un personal
+// Route::get('/staff/ShowStaff/{staff?}', [StaffController::class, 'ShowStaff']);

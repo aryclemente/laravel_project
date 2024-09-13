@@ -13,9 +13,9 @@
 
     <p><strong>Remuneracion:</strong> {{ $contrato->Remuneración }} $</p>
     <p>Persona:
-        {{ $solicitud->persona ? $solicitud->persona->Nombres . ' ' . $solicitud->persona->Apellidos : 'No disponible' }}
+        {{ $persona_ps ? $persona_ps->Nombres . ' ' . $persona_ps->Apellidos : 'No disponible' }}
     </p>
-    <p>Servicio: {{ $solicitud->servicio ? $solicitud->servicio->Nombre_Servicio : 'No disponible' }}</p>
+    <p>Servicio: {{ $servicio_ps ? $servicio_ps->Nombre_Servicio : 'No disponible' }}</p>
     <!-- Detalles específicos para contrato a destajo -->
 </body>
 

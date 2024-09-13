@@ -70,11 +70,12 @@ class ContratoController extends Controller
 
     public function show(string $id)
     {
-        $solicitud = SolicitudesContrato::findOrFail($id);
-        $contratos = Contrato::where('Solicitudes_contratos_idSolicitud', $id)->get();
-        if ($contratos->isNotEmpty()) {
-            $contrato = $contratos->first(); // Obtener el primer resultado
-        }
+        $contrato = Contrato::findOrFail($id);
+        $solicitudes = SolicitudesContrato::where('idSolicitud', $contrato->Solicitudes_contratos_idSolicitud)->get();
+
+        $solicitud = $solicitudes->first(); // Obtener el primer resultado
+
+
 
         $personaservicio = null;
         $empresas_servicios = null;
@@ -112,15 +113,104 @@ class ContratoController extends Controller
 
     public function edit(string $id)
     {
-        return view('contratos.edit', compact('contrato'));
+        // Obtener todos los datos necesarios para la vista
+        $solicitudes = SolicitudesContrato::all();
+        $personas = Persona::all();
+        $servicios = Servicio::all();
+        $tiposolicitud = TipoSolicitud::all();
+        $turnos = Turno::all();
+        $cargos = Cargo::all();
+        $empresas = Empresa::all();
+
+        // Encontrar el contrato y solicitud por ID
+        $contrato = Contrato::findOrFail($id);
+
+        $solicitudes = SolicitudesContrato::where('idSolicitud', $contrato->Solicitudes_contratos_idSolicitud)->get();
+        if ($solicitudes->isNotEmpty()) {
+            $solicitud = $solicitudes->first(); // Obtener el primer resultado
+        }
+        $tipos = TipoSolicitud::where('idTipo_Solicitud', $solicitud->Tipo_Solicitud_idTipo_Solicitud)->get();
+        $tipo = $tipos->first(); // Obtener el primer resultado
+        // Inicializar las variables
+
+        $personaservicio = null;
+        $empresas_servicios = null;
+        $persona_ps = null;
+        $servicio_ps = null;
+        $empresa_es = null;
+        $servicio_es = null;
+        $ps = null;
+        $es = null;
+
+        switch ($solicitud->Tipo_Solicitud_idTipo_Solicitud) {
+            case 1:
+                $view = 'modules.contratos.fixed_contract_template';
+                break;
+            case 2:
+                // Obtener los datos relacionados con la solicitud
+                $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+
+                // Solo necesitas el primer resultado
+                if ($personaservicio->isNotEmpty()) {
+                    $ps = $personaservicio->first(); // Obtener el primer resultado
+                    $persona_ps = $ps->persona;
+                    $servicio_ps = $ps->servicio;
+                }
+
+            case 3:
+                $view = 'modules.contratos.company_contract_template';
+                break;
+            default:
+                abort(404, 'Tipo de contrato no válido.');
+        }
+
+
+        // Pasar las variables a la vista
+        return view('modules/contratos.edit', compact('contrato', 'solicitud', 'tipo', 'tiposolicitud', 'personas', 'servicios', 'turnos', 'cargos', 'empresas', 'persona_ps', 'servicio_ps', 'ps'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $contrato = Contrato::findOrFail($id);
+
+        $solicitudes = SolicitudesContrato::where('idSolicitud', $contrato->Solicitudes_contratos_idSolicitud)->get();
+        if ($solicitudes->isNotEmpty()) {
+            $solicitud = $solicitudes->first(); // Obtener el primer resultado
+        }
+        $validatedData = $request->validate([
+            'servicio_ps' => 'required',
+            'personas_ps' => 'required',
+            'remuneracion_ps' => 'required',
+            'fecha_inicio' => 'required|date|after:today',
+            'fecha_final' => 'required|date|after:today',
+            'acepto_terminos' => ['required', new AcceptedTerms],
+        ]);
+
+        $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+        $ps = $personaservicio->first();
+        $ps->Servicios_idServicio = $request->servicio_ps;
+        $ps->Personas_idPersonas = $request->personas_ps;
+        $ps->Costo_Servicio = $request->remuneracion_ps;
+
+        $ps->save();
+        $contrato->Fecha_Inicio = $request->fecha_inicio;
+        $contrato->Fecha_Fin = $request->fecha_final;
+
+        $contrato->update($validatedData);
+        return redirect()->route('contratos.show', $contrato->idContratos);
     }
 
     public function finalizar(string $id)
     {
         $contrato = Contrato::FindOrFail($id);
-        $contrato->estado = 'finalizado';
-        $contrato->save();
 
+        if ($contrato->Status_Contrato === false) {
+            $contrato->Status_Contrato = true;
+            $contrato->save();
+        } else {
+            $contrato->Status_Contrato = false;
+            $contrato->save();
+        }
         return redirect()->route('contratos.index');
     }
 
@@ -133,6 +223,14 @@ class ContratoController extends Controller
             $solicitud = $solicitudes->first(); // Obtener el primer resultado
 
         }
+        $personaservicio = null;
+        $empresas_servicios = null;
+        $persona_ps = null;
+        $servicio_ps = null;
+        $empresa_es = null;
+        $servicio_es = null;
+        $ps = null;
+        $es = null;
 
         // Validar el tipo de contrato y seleccionar la vista
 
@@ -141,6 +239,10 @@ class ContratoController extends Controller
                 $view = 'modules.contratos.fixed_contract_template';
                 break;
             case 2:
+                $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
+                $ps = $personaservicio->first(); //
+                $persona_ps = $ps->persona;
+                $servicio_ps = $ps->servicio;
                 $view = 'modules.contratos.task_contract_template';
                 break;
 
@@ -171,7 +273,11 @@ class ContratoController extends Controller
         //         break;
         // }
 
-        $pdf = \PDF::loadView($view, ['solicitud' => $solicitud], ['contrato' => $contrato]);
+        $pdf = \PDF::loadView($view,  [
+            'contrato' => $contrato,
+            'persona_ps' => $persona_ps,
+            'servicio_ps' => $servicio_ps
+        ], [], 'UTF-8');
 
         return $pdf->download('contrato_' . $id . '.pdf');
     }

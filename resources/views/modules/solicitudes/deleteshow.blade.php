@@ -50,7 +50,7 @@
                                     Mostrar
                                 </a>
 
-                                <form action="{{ route('solicitudes.destroy', ['id' => $solicitud->idSolicitud]) }}"
+                                <form action="{{ route('solicitudes.desactivar', ['id' => $solicitud->idSolicitud]) }}"
                                     method="POST" style="display:inline;"
                                     onsubmit="return confirm('¿Estás seguro de que quieres restaurar esta solicitud?');">
                                     @csrf

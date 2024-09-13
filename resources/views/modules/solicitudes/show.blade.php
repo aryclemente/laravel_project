@@ -49,11 +49,10 @@
                     <a href="{{ route('solicitudes.index') }}" class="btn btn-outline-primary">Volver a la lista</a>
                     <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}"
                         class="btn btn-outline-warning">Editar</a>
-                    <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST"
+                    <form action="{{ route('solicitudes.desactivar', ['id' => $solicitud->idSolicitud]) }}" method="POST"
                         style="display:inline;"
                         onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');">
                         @csrf
-                        @method('DELETE')
                         <button type="submit" class="btn btn-outline-danger">Eliminar</button>
                     </form>
                 </div>

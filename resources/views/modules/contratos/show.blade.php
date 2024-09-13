@@ -49,19 +49,19 @@
                 </div>
                 <div class="card-footer text-end">
                     <a class="btn btn-outline-success"
-                        href="{{ route('solicitudes.ContractPDF', $contrato->idContratos) }}">Descargar
+                        href="{{ route('contratos.ContractPDF', $contrato->idContratos) }}">Descargar
                         PDF</a>
 
-                    <a href="{{ route('solicitudes.edit', $solicitud->idSolicitud) }}"
+                    <a href="{{ route('contratos.edit', $contrato->idContratos) }}"
                         class="btn btn-outline-warning">Editar</a>
-                    <form action="{{ route('solicitudes.destroy', $solicitud->idSolicitud) }}" method="POST"
+                    <form action="{{ route('contratos.finalizar', $contrato->idContratos) }}" method="POST"
                         style="display:inline;"
                         onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');">
                         @csrf
-                        @method('DELETE')
+
                         <button type="submit" class="btn btn-outline-danger">Eliminar</button>
                     </form>
-                    <a href="{{ route('solicitudes.index') }}" class="btn btn-outline-primary">Volver a la lista</a>
+                    <a href="{{ route('contratos.index') }}" class="btn btn-outline-primary">Volver a la lista</a>
                 </div>
             </div>
         </div>
