@@ -2,7 +2,20 @@
 @section('contenido')
     <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold mb-6">Historial de Contratos</h1>
-
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <table class="">
             <thead>
                 <tr>
@@ -29,7 +42,8 @@
                         @endforeach
                     @endforeach
 
-                    <td class="py-2 px-4 border-b">{{ $contrato->Status_Contrato }}</td>
+                    <td class="py-2 px-4 border-b"> {{ $solicitud->Status_solicitud === true ? 'Activa' : 'Desactivado' }}
+                    </td>
                     <td class="py-2 px-4 border-b">{{ $contrato->Fecha_Inicio->format('d/m/Y') }}</td>
                     <td class="py-2 px-4 border-b">{{ $contrato->Fecha_Fin->format('d/m/Y') }}</td>
 
@@ -51,5 +65,8 @@
                 @endforeach
             </tbody>
         </table>
+        <a class="btn btn-outline-danger" href="{{ route('contratos.deleteshow') }}">
+            Contratos Finalizados
+        </a>
     </div>
 @endsection

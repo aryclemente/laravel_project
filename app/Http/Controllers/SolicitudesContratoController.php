@@ -70,11 +70,10 @@ class SolicitudesContratoController extends Controller
             case 2:
                 // Validar los datos necesarios para el Personal A destajo
                 $request->validate([
-                    'personas_id_2' => 'required|exists:personas_has_servicios,Personas_idPersonas',
-                    'servicio_id' => 'required|exists:personas_has_servicios,Servicios_idServicio',
-                    'costo_servicio' => 'required|numeric',
+                    'personas_id_2' => 'required|integer|gt:0|exists:personas_has_servicios,Personas_idPersonas',
+                    'servicio_id' => 'required|integer|gt:0|exists:personas_has_servicios,Servicios_idServicio',
+                    'costo_servicio' => 'required|numeric|gt:0',
                 ]);
-
                 // Crear y guardar un nuevo registro en PersonasHasServicio
                 $personas_servicios = new PersonasHasServicio();
                 $personas_servicios->Servicios_idServicio = $request->servicio_id;
@@ -87,7 +86,7 @@ class SolicitudesContratoController extends Controller
                 $solicitudes->Tipo_Solicitud_idTipo_Solicitud = $request->tipo_solicitud;
                 $solicitudes->save();
                 $personas_servicios->solicitudes_contratos()->save($solicitudes);
-                return redirect()->route('solicitudes.index')->with('success', 'Solicitud de Personal a Destajo creada exitosamente.');
+                return redirect()->route('solicitudes.show', $solicitudes->idSolicitud)->with('success', 'Solicitud de Personal a Destajo creada exitosamente.');
             case 3:
                 $request->validate([
                     'empresa_id' => 'required|exists:personas_has_servicios,Personas_idPersonas',
@@ -233,12 +232,12 @@ class SolicitudesContratoController extends Controller
 
         // Validar los datos recibidos
         $validatedData = $request->validate([
-            'tipo_solicitud' => 'required|integer',
-            'personas_id' => 'required|integer',
-            'cargos_id' => 'nullable|integer',
-            'turnos_id' => 'nullable|integer',
-            'servicio_id' => 'nullable|integer',
-            'costo_servicio' => 'nullable|numeric',
+            'tipo_solicitud' => 'required|integer|exists:tipo_solicitud,idTipo_Solicitud|gt:0',
+            'personas_id' => 'required|integer|exists:personas_has_servicios,Personas_idPersonas|gt:0',
+            'cargos_id' => 'nullable|integer|exists:cargos,idCargos|gt:0',
+            'turnos_id' => 'nullable|integer|exists:turnos,idTurnos|gt:0',
+            'servicio_id' => 'nullable|integer|exists:personas_has_servicios,Servicios_idServicio|gt:0',
+            'costo_servicio' => 'nullable|numeric|exists:personas_has_servicios,Costo_Servicio|gt:0',
         ]);
 
         // Actualizar la solicitud

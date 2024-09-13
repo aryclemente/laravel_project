@@ -23,7 +23,7 @@ class ContratoController extends Controller
 {
     public function index()
     {
-        $contratos = Contrato::all();
+        $contratos = Contrato::where('Status_Contrato', true)->get();;
         $solicitudes = SolicitudesContrato::all();
         $tipos = TipoSolicitud::all();
         return view('modules.contratos.index', compact('contratos', 'solicitudes', 'tipos'));
@@ -35,9 +35,11 @@ class ContratoController extends Controller
 
         $request->validate([
             'fecha_inicio' => 'required|date|after:today',
-            'fecha_final' => 'required|date|after:today',
+            'fecha_final' => 'required|date|after:fecha_inicio',
             'acepto_terminos' => ['required', new AcceptedTerms],
+
         ]);
+        $solicitud->Status_solicitud = false;
 
         $contrato = new Contrato();
         $contrato->Fecha_Inicio = $request->fecha_inicio;
@@ -49,22 +51,23 @@ class ContratoController extends Controller
                 $check = 1;
             case 2:
                 $request->validate([
-                    'remuneracion_ps' => 'required',
+                    'remuneracion_ps' => 'required|numeric|gt:0',
                 ]);
                 $contrato->Remuneración = $request->remuneracion_ps;
                 $contrato->Status_Contrato = true;
                 $contrato->Solicitudes_contratos_idSolicitud = $solicitud->idSolicitud;
                 $contrato->save();
-                return redirect()->route('contratos.index');
+                return redirect()->route('contratos.show', $contrato->idContratos)->with('success', 'Solicitud creada exitosamente.');
             case 3:
                 $request->validate([
-                    'remuneracion_es' => 'required|numeric|min:0',
+                    'remuneracion_es' => 'required|numeric|gt:0',
                 ]);
                 $contrato->Remuneración = $request->remuneracion_es;
                 $contrato->Status_Contrato = true;
                 $contrato->Solicitudes_contratos_idSolicitud = $solicitud->idSolicitud;
                 $contrato->save();
-                return redirect()->route('contratos.index');
+                $solicitud->save();
+                return redirect()->route('contratos.show', $contrato->idContratos)->with('success', 'Solicitud creada exitosamente.');
         }
     }
 
@@ -178,14 +181,16 @@ class ContratoController extends Controller
             $solicitud = $solicitudes->first(); // Obtener el primer resultado
         }
         $validatedData = $request->validate([
-            'servicio_ps' => 'required',
-            'personas_ps' => 'required',
-            'remuneracion_ps' => 'required',
+
             'fecha_inicio' => 'required|date|after:today',
             'fecha_final' => 'required|date|after:today',
             'acepto_terminos' => ['required', new AcceptedTerms],
         ]);
-
+        $request->validate([
+            'remuneracion_ps' => 'required|numeric|gt:0',
+            'servicio_ps' => 'required|integer|gt:0|exists:personas_has_servicios,Servicios_idServicio',
+            'personas_ps' => 'required|integer|gt:0|exists:personas_has_servicios,Personas_idPersonas',
+        ]);
         $personaservicio = PersonasHasServicio::where('id_Personas_has_Servicios', $solicitud->id_Personas_has_Servicios_)->get();
         $ps = $personaservicio->first();
         $ps->Servicios_idServicio = $request->servicio_ps;
@@ -197,7 +202,7 @@ class ContratoController extends Controller
         $contrato->Fecha_Fin = $request->fecha_final;
 
         $contrato->update($validatedData);
-        return redirect()->route('contratos.show', $contrato->idContratos);
+        return redirect()->route('contratos.show', $contrato->idContratos)->with('success', 'Solicitud actualizada correctamente.');;
     }
 
     public function finalizar(string $id)
@@ -280,5 +285,18 @@ class ContratoController extends Controller
         ], [], 'UTF-8');
 
         return $pdf->download('contrato_' . $id . '.pdf');
+    }
+
+    public function deleteshow()
+    {
+        $tipos = TipoSolicitud::all();
+        //$solicitudes = SolicitudesContrato::all();
+        //dd($tiposolicitud, $solicitudes);
+        $contratos = Contrato::where('Status_Contrato', false)->get();
+        $solicitudes = SolicitudesContrato::all();
+
+
+
+        return view('modules/contratos/deleteshow', compact('contratos', 'tipos', 'solicitudes'));
     }
 }

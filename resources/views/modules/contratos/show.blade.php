@@ -8,6 +8,11 @@
     </header>
 
     <main>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="container py-4">
             <div class="card border-info">
                 <div class="card-header border-info">
@@ -54,11 +59,10 @@
 
                     <a href="{{ route('contratos.edit', $contrato->idContratos) }}"
                         class="btn btn-outline-warning">Editar</a>
-                    <form action="{{ route('contratos.finalizar', $contrato->idContratos) }}" method="POST"
+                    <form action="{{ route('contratos.finalizar', ['id' => $contrato->idContratos]) }}" method="POST"
                         style="display:inline;"
                         onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta solicitud?');">
                         @csrf
-
                         <button type="submit" class="btn btn-outline-danger">Eliminar</button>
                     </form>
                     <a href="{{ route('contratos.index') }}" class="btn btn-outline-primary">Volver a la lista</a>

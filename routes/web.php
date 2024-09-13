@@ -24,7 +24,7 @@ Route::put('/solicitudes/update/{id}', [SolicitudesContratoController::class, 'u
 Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
 //Route::get('/solicitudes/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
 Route::post('/solicitudes/{id}', [SolicitudesContratoController::class, 'desactivar'])->name('solicitudes.desactivar');
-
+//Lista de Solicitudes Desactivadas
 Route::get('/solicitudes/delete', [SolicitudesContratoController::class, 'deleteshow'])->name('solicitudes.deleteshow');
 
 
@@ -47,6 +47,8 @@ Route::get('/contratos/show/{id}', [ContratoController::class, 'show'])->name('c
 
 Route::post('/contratos/{id}/finalizar', [ContratoController::class, 'finalizar'])->name('contratos.finalizar');
 
+//Lista de Contratos Finalizados
+Route::get('/contratos/finalizado', [ContratoController::class, 'deleteshow'])->name('contratos.deleteshow');
 
 
 // //Muestra todos los servicios

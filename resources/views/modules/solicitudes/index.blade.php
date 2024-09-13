@@ -1,6 +1,20 @@
 @extends('layouts/main')
 @section('contenido')
     <header>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div class="container p-3">
             <blockquote class="blockquote py-2">
@@ -17,6 +31,7 @@
 
 
     </header>
+
     <main>
         <div class="table-responsive py-6 px-4">
             <table class="table caption">
@@ -49,7 +64,7 @@
                                 {{ $solicitud->tipo_solicitud ? $solicitud->tipo_solicitud->Tipo_Solicitud : 'Sin tipo de solicitud' }}
                             </td>
                             <td class="">
-                                {{ $solicitud->Status_solicitud }}
+                                {{ $solicitud->Status_solicitud === true ? 'Activa' : 'Desactivado' }}
                             </td>
                             <td class="text-center">
                                 <a class="btn btn-outline-success"

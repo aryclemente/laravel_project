@@ -41,7 +41,7 @@
                                 {{ $solicitud->tipo_solicitud ? $solicitud->tipo_solicitud->Tipo_Solicitud : 'Sin tipo de solicitud' }}
                             </td>
                             <td class="">
-                                {{ $solicitud->Status_solicitud }}
+                                {{ $solicitud->Status_solicitud === true ? 'Activa' : 'Desactivado' }}
                             </td>
                             <td class="text-center">
 

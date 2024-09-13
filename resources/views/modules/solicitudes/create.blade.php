@@ -7,6 +7,15 @@
             <h3>Nueva Solicitud</h3>
         </header>
         <main class="px-4 py-2">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="card border-success">
                 <div class="card-header border-success">
                     Formulario
@@ -15,7 +24,8 @@
                     <h5 class="card-title">Ingresa los datos de la solicitud</h5>
                     <p class="card-text">Recuerda revisar </p>
 
-                    <form action="{{ route('solicitudes.store') }}" method="POST" class="row g-3 needs-validation" novalidate>
+                    <form action="{{ route('solicitudes.store') }}" method="POST" class="row g-3 needs-validation"
+                        novalidate>
                         @csrf
                         @method('POST')
                         <div class="col-md-3 position-relative ">
