@@ -53,7 +53,7 @@
                             </td>
                             <td class="text-center">
                                 <a class="btn btn-outline-success"
-                                    href="{{ route('solicitudes.generateContract', $solicitud->idSolicitud) }}">
+                                    href="{{ route('solicitudes.generarcontrato', $solicitud->idSolicitud) }}">
                                     Generar Contrato
                                 </a>
                                 <a class="btn btn-outline-info"

@@ -27,6 +27,7 @@ class Contrato extends Model
 {
 	protected $table = 'contratos';
 	public $timestamps = false;
+	protected $primaryKey = 'idContratos';
 
 	protected $casts = [
 

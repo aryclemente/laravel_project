@@ -24,12 +24,17 @@ Route::put('/solicitudes/update/{id}', [SolicitudesContratoController::class, 'u
 Route::get('/solicitudes/show/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
 
 Route::get('/solicitudes/{id}', [SolicitudesContratoController::class, 'show'])->name('solicitudes.show');
-//Genera un pdf
-Route::get('/solicitudes/generateContract/{id}', [SolicitudesContratoController::class, 'generarcontrato'])->name('solicitudes.generateContract');
-
 Route::put('/solicitudes/{id}', [SolicitudesContratoController::class, 'destroy'])->name('solicitudes.destroy');
 
 Route::get('/solicitudes/delete', [SolicitudesContratoController::class, 'deletes'])->name('solicitudes.deleteshow');
+
+
+//Crear un Contrato
+Route::get('/solicitudes/generarcontrato/{id}', [SolicitudesContratoController::class, 'generarcontrato'])->name('solicitudes.generarcontrato');
+//Genera un pdf
+Route::get('/solicitudes/ContractPDF/{id}', [ContratoController::class, 'ContractPDF'])->name('solicitudes.ContractPDF');
+
+
 
 /*Ruta con Controlador | Muestra todos los contratos*/
 Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.index');

@@ -59,15 +59,15 @@
                             </div>
 
                             <div class="col-md-4 position-relative">
-                                <label for="personas_ps" class="form-label">Personas</label>
-                                <option class="form-select" value="">
+                                <label class="form-label">Personas</label>
+                                <option id="persona_ps" class="form-select" value="">
                                     {{ $persona_ps ? $persona_ps->Nombres : 'No definido' }}
 
                                 </option>
                             </div>
 
                             <div class="col-md-6 position-relative">
-                                <label for="remuneracion_ps" class="form-label">Remuneración</label>
+                                <label class="form-label">Remuneración</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">$</span>
                                     <input type="text" id="remuneracion_ps" name="remuneracion_ps" class="form-control"
