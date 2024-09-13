@@ -2,6 +2,9 @@
 @section('contenido')
     <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold mb-6">Historial de Contratos</h1>
+        <a class="btn btn-outline-info" href="{{ route('contratos.deleteshow') }}">
+            Contratos Finalizados
+        </a>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -65,8 +68,6 @@
                 @endforeach
             </tbody>
         </table>
-        <a class="btn btn-outline-danger" href="{{ route('contratos.deleteshow') }}">
-            Contratos Finalizados
-        </a>
+
     </div>
 @endsection

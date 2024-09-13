@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contrato;
+use App\Models\SolicitudesContrato;
 
 class DashboardController extends Controller
 {
@@ -18,17 +19,17 @@ class DashboardController extends Controller
         $contratosActivosCount = Contrato::where('Status_Contrato', 1)->count();
 
         // Contar los contratos en borrador
-        $contratosBorradorCount = Contrato::where('Status_Contrato', 0)->count();
+        $contratosInactivaCount = Contrato::where('Status_Contrato', 0)->count();
 
         // Contar los contratos inactivos
-        $contratosInactivosCount = Contrato::where('Status_Contrato', 2)->count();
+        $solicitudesActivasCount = SolicitudesContrato::where('Status_solicitud', 1)->count();
 
 
         // Pasar las variables a la vista
         return view('modules/dashboard/index', [
             'contratosActivosCount' => $contratosActivosCount,
-            'contratosBorradorCount' => $contratosBorradorCount,
-            'contratosInactivosCount' => $contratosInactivosCount,
+            'contratosInactivaCount' => $contratosInactivaCount,
+            'solicitudesActivasCount' => $solicitudesActivasCount,
         ]);
     }
 }

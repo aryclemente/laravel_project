@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\SolicitudesContratoController;
 use App\Http\Controllers\DashboardController;
 
@@ -12,6 +13,12 @@ use App\Http\Controllers\DashboardController;
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 /*Muestra todas las solicitudes*/
 Route::get('/solicitudes', [SolicitudesContratoController::class, 'index'])->name('solicitudes.index');
+/*Muestra todas las solicitudes Fijas*/
+Route::get('/solicitudes/fijo', [SolicitudesContratoController::class, 'fijo'])->name('solicitudes.fijo');
+/*Muestra todas las solicitudes Destajo*/
+Route::get('/solicitudes/destajo', [SolicitudesContratoController::class, 'destajo'])->name('solicitudes.destajo');
+/*Muestra todas las solicitudes Empresa*/
+Route::get('/solicitudes/empresas', [SolicitudesContratoController::class, 'empresas'])->name('solicitudes.empresas');
 /*Crea una solicitud*/
 Route::get('/solicitudes/create', [SolicitudesContratoController::class, 'create'])->name('solicitudes.create');
 /*Envia la solicitud a BBDD*/
@@ -51,8 +58,11 @@ Route::post('/contratos/{id}/finalizar', [ContratoController::class, 'finalizar'
 Route::get('/contratos/finalizado', [ContratoController::class, 'deleteshow'])->name('contratos.deleteshow');
 
 
-// //Muestra todos los servicios
-// Route::get('/services', [ServicesController::class, 'ShowAllServices']);
+//Muestra todos los servicios
+Route::get('/services', [ServicesController::class, 'index'])->name('servicios.index');
+
+//Muestra todas las empresas
+Route::get('/empresas', [EmpresaController::class, 'index'])->name('empresas.index');
 
 // //Ruta con Controlador | Crea un nuevo servicio
 // Route::get('/services/CreateService', [ServicesController::class, 'CreateService']);
@@ -63,8 +73,8 @@ Route::get('/contratos/finalizado', [ContratoController::class, 'deleteshow'])->
 // //Se visualiza el detalle de un Servicio
 // Route::get('/services/ShowService/{service?}', [ServicesController::class, 'ShowService']);
 
-// //Muestra todo el personal
-// Route::get('/staff', [StaffController::class, 'ShowAllStaff']);
+//Muestra todo el personal
+Route::get('/staff', [StaffController::class, 'index'])->name('personas.index');
 
 // //Ruta con Controlador | Crea un nuevo personal
 // Route::get('/staff/CreateStaff', [StaffController::class, 'CreateStaff']);

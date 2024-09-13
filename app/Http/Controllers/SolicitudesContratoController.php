@@ -307,4 +307,34 @@ class SolicitudesContratoController extends Controller
 
         return view('modules/solicitudes/deleteshow', compact('solicitudes', 'tiposolicitud'));
     }
+
+    public function fijo()
+    {
+        $tiposolicitud = TipoSolicitud::all();
+        //$solicitudes = SolicitudesContrato::all();
+        $solicitudes = SolicitudesContrato::where('Tipo_Solicitud_idTipo_Solicitud', 1)->get();
+        $cargos = Cargo::all();
+        $servicios = Servicio::all();
+        return view('modules/solicitudes/index', compact('solicitudes', 'tiposolicitud'));
+    }
+
+    public function destajo()
+    {
+        $tiposolicitud = TipoSolicitud::all();
+        //$solicitudes = SolicitudesContrato::all();
+        $solicitudes = SolicitudesContrato::where('Tipo_Solicitud_idTipo_Solicitud', 2)->get();
+        $cargos = Cargo::all();
+        $servicios = Servicio::all();
+        return view('modules/solicitudes/index', compact('solicitudes', 'tiposolicitud'));
+    }
+
+    public function empresas()
+    {
+        $tiposolicitud = TipoSolicitud::all();
+        //$solicitudes = SolicitudesContrato::all();
+        $solicitudes = SolicitudesContrato::where('Tipo_Solicitud_idTipo_Solicitud', 3)->get();
+        $cargos = Cargo::all();
+        $servicios = Servicio::all();
+        return view('modules/solicitudes/index', compact('solicitudes', 'tiposolicitud'));
+    }
 }

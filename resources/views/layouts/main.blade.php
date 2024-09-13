@@ -23,26 +23,31 @@
                         width: 80px;
                         height: 50px;
                         object-fit: cover;
-                    "
-                >
+                    ">
             </a>
 
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse items-center">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard.index') }}"> Dashboard </a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('dashboard.index') }}"> Dashboard
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{ route('solicitudes.index') }}"> Personal Fijo </a>
+                        <a class="nav-link" aria-current="page" href="{{ route('solicitudes.fijo') }}"> Personal Fijo
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{ route('contratos.index') }}"> Presonal a Destajo </a>
+                        <a class="nav-link" aria-current="page" href="{{ route('solicitudes.destajo') }}"> Personal a
+                            Destajo </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{ route('contratos.index') }}"> Empresas por Servicios </a>
+                        <a class="nav-link" aria-current="page" href="{{ route('solicitudes.empresas') }}"> Empresas por
+                            Servicios </a>
                     </li>
                 </ul>
             </div>
@@ -67,35 +72,39 @@
             </li>
             <li class="nav-item nav-item-mobile">
                 <i id="iconLateralMenu" class="fa-solid fa-user-check"></i>
-                <a class="nav-link" aria-current="page" href="#"> Trabajadores </a>
+                <a class="nav-link" aria-current="page" href="{{ route('personas.index') }}"> Personas </a>
             </li>
             <li class="nav-item nav-item-mobile">
                 <i id="iconLateralMenu" class="fa-solid fa-handshake"></i>
-                <a class="nav-link" aria-current="page" href="#"> Servicios </a>
+                <a class="nav-link" aria-current="page" href="{{ route('servicios.index') }}"> Servicios </a>
             </li>
             <li class="nav-item nav-item-mobile">
                 <i id="iconLateralMenu" class="fa-solid fa-building"></i>
-                <a class="nav-link" aria-current="page" href="#"> Empresas </a>
+                <a class="nav-link" aria-current="page" href="{{ route('empresas.index') }}"> Empresas </a>
             </li>
 
             <!-- Professional section -->
             <li class="nav-item nav-item-mobile">
                 <i id="iconLateralMenu" class="fa-solid fa-building"></i>
-                <a class="nav-link" aria-current="page" href="#"> Personal Fijo </a>
+                <a class="nav-link" aria-current="page" href="{{ route('solicitudes.fijo') }}"> Personal Fijo </a>
             </li>
             <li class="nav-item nav-item-mobile">
                 <i id="iconLateralMenu" class="fa-solid fa-building"></i>
-                <a class="nav-link" aria-current="page" href="#"> Presonal a Destajo </a>
+                <a class="nav-link" aria-current="page" href="{{ route('solicitudes.destajo') }}"> Presonal a Destajo
+                </a>
             </li>
             <li class="nav-item nav-item-mobile">
                 <i id="iconLateralMenu" class="fa-solid fa-building"></i>
-                <a class="nav-link" aria-current="page" href="#"> Empresas por Servicios </a>
+                <a class="nav-link" aria-current="page" href="{{ route('solicitudes.empresas') }}"> Empresas por
+                    Servicios </a>
             </li>
         </ul>
     </div>
 
     <div class="container-fluid bg-light-subtle">
-        <button class="btn btn-primary lateral-nav-desktop" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavLateral" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" id="showLateralMenu">
+        <button class="btn btn-primary lateral-nav-desktop" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavLateral" aria-controls="navbarNavDropdown" aria-expanded="false"
+            aria-label="Toggle navigation" id="showLateralMenu">
             <i id="iconLateralMenu" class="fa-solid fa-arrow-right"></i>
         </button>
         <div class="row justify-content-center" style="height:100vh">
@@ -105,27 +114,33 @@
                     <ul class="navbar-nav">
                         <li class="nav-item lateral-nav-item-mobile">
                             <i id="iconLateralMenu" class="fa-solid fa-house"></i>
-                            <a class="nav-link active" aria-current="page" href="{{ route('dashboard.index') }}"> Dashboard </a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('dashboard.index') }}">
+                                Dashboard </a>
                         </li>
                         <li class="nav-item lateral-nav-item-mobile">
                             <i id="iconLateralMenu" class="fa-solid fa-file-contract"></i>
-                            <a class="nav-link" aria-current="page" href="{{ route('contratos.index') }}"> Contratos </a>
+                            <a class="nav-link" aria-current="page" href="{{ route('contratos.index') }}"> Contratos
+                            </a>
                         </li>
                         <li class="nav-item lateral-nav-item-mobile">
                             <i id="iconLateralMenu" class="fa-solid fa-list-check"></i>
-                            <a class="nav-link" aria-current="page" href="{{ route('solicitudes.index') }}"> Solicitudes </a>
+                            <a class="nav-link" aria-current="page" href="{{ route('solicitudes.index') }}">
+                                Solicitudes </a>
                         </li>
                         <li class="nav-item lateral-nav-item-mobile">
                             <i id="iconLateralMenu" class="fa-solid fa-user-check"></i>
-                            <a class="nav-link" aria-current="page" href="#"> Trabajadores </a>
+                            <a class="nav-link" aria-current="page" href="{{ route('personas.index') }}"> Personas
+                            </a>
                         </li>
                         <li class="nav-item lateral-nav-item-mobile">
                             <i id="iconLateralMenu" class="fa-solid fa-handshake"></i>
-                            <a class="nav-link" aria-current="page" href="#"> Servicios </a>
+                            <a class="nav-link" aria-current="page" href="{{ route('servicios.index') }}"> Servicios
+                            </a>
                         </li>
                         <li class="nav-item lateral-nav-item-mobile">
                             <i id="iconLateralMenu" class="fa-solid fa-building"></i>
-                            <a class="nav-link" aria-current="page" href="#"> Empresas </a>
+                            <a class="nav-link" aria-current="page" href="{{ route('empresas.index') }}">
+                                Empresas </a>
                         </li>
                     </ul>
                 </div>
