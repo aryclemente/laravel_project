@@ -1,0 +1,61 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root{
+    --beige:  #fcf3cf ;
+    --green:  #DAF7A6 ;
+    --mustard:  #FFC300 ;
+    --tomatoe-red: #FF5733 ;
+    --wine:  #C70039 ;
+    --dark-wine:  #900C3F;
+}
+.root-bg-beige{
+    background-color: var(--beige);
+}
+.root-bg-green{
+    background-color: var(--green);
+}
+.root-bg-tomatoe{
+    background-color: var(--tomatoe-red);
+}
+.root-bg-wine{
+    background-color: var(--wine);
+}
+.root-bg-dark{
+    background-color: var(--dark-wine);
+}
+.lateral-nav-desktop{
+    position: absolute;
+}
+.nav-item-mobile{
+    width: 200px;
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+    margin: auto;
+    margin-top: 20px;
+    transition: all 0.4s;
+}
+.nav-item-mobile:hover{
+    width: 100%;
+    border: 12px;
+    background-color: var(--tomatoe-red);
+}
+
+@media (max-width: 990px) {
+    .lateral-nav-desktop{
+        display: none;
+    }
+    .lateral-nav-mobile{
+        position: fixed;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 90vh;
+        bottom: 0;
+        z-index: 10000;
+        transition: 0.5s;
+
+    }
+
+
+}
